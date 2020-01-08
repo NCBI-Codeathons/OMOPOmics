@@ -1,4 +1,4 @@
-# Chroma-T-cell
+# OMOPOmics
 
 There exists limited infrastructure for matching patient electronic health records (EHR) to patient molecular samples. A standardized infrastructure, i.e. following the [OHDSI common data model](https://ohdsi.github.io/TheBookOfOhdsi/), allows for population and patient-level analyses to improve medical practice and understand disease. 
 
