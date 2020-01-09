@@ -19,7 +19,7 @@ Perform queries **YASH**
 
 # Using OMOPOmics Framework
 
-![](docs/imgs/OMOPOmics_use_flowchart.pdf)
+![](docs/imgs/OMOPOmics_use_flowchart.png)
 
 1. Collect/Extract Data 
         Collect detailed information regarding patient demographic, NGS assay parameters, 
