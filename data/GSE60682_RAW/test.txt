@@ -1,0 +1,8 @@
+GSM1484796_Donor1_TCA0hrs_Rep1.bed.gz
+GSM1484797_Donor1_TCA0hrs_Rep2.bed.gz
+GSM1484798_Donor1_TCA1hrs_Rep1.bed.gz
+GSM1484799_Donor1_TCA1hrs_Rep2.bed.gz
+GSM1484800_Donor1_TCA2hrs_Rep1.bed.gz
+GSM1484801_Donor1_TCA2hrs_Rep2.bed.gz
+GSM1484802_Donor1_TCA4hrs_Rep1.bed.gz
+GSM1484803_Donor1_TCA4hrs_Rep2.bed.gz
