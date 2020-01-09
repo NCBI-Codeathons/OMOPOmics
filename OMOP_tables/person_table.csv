@@ -1,0 +1,16 @@
+person_id,gender_concept_id,person_source_value,gender_source_value
+100001,8507,Donor1,male
+100002,8507,Donor2,male
+100003,8507,Donor3,male
+100004,8532,Donor4,female
+100005,8551,Donor5,NA
+100006,8551,Donor6,NA
+100007,8532,Donor7,female
+100008,8532,Donor8,female
+100009,8532,Donor9,female
+100010,8507,Donor10,male
+100011,8551,Donor11,NA
+100020,8551,Donor20,NA
+100031,8507,Donor31,male
+100032,8507,Donor32,male
+100033,8507,Donor33,male
