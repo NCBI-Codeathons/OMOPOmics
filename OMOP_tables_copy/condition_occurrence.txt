@@ -1,26 +1,8 @@
 person_id	condition_source_value	condition_start_date
-10025	cutaneous T cell leukemia (CTCL)	0
-10026	cutaneous T cell leukemia (CTCL)	0
-10027	cutaneous T cell leukemia (CTCL)	0
-10028	cutaneous T cell leukemia (CTCL)	0
-10029	cutaneous T cell leukemia (CTCL)	0
-10030	cutaneous T cell leukemia (CTCL)	0
-10031	cutaneous T cell leukemia (CTCL)	0
-10035	cutaneous T cell leukemia (CTCL)	0
-10036	cutaneous T cell leukemia (CTCL)	0
-10037	cutaneous T cell leukemia (CTCL)	0
-10038	cutaneous T cell leukemia (CTCL)	0
-10051	cutaneous T cell leukemia (CTCL)	0
-10052	cutaneous T cell leukemia (CTCL)	0
-10053	cutaneous T cell leukemia (CTCL)	0
-10054	cutaneous T cell leukemia (CTCL)	0
-10001	T cell activation	4:00:00
-10002	T cell activation	4:00:00
-10003	T cell activation	2:00:00
-10004	T cell activation	2:00:00
-10005	T cell activation	1:00:00
-10006	T cell activation	1:00:00
-10007	T cell activation	0:00:00
-10008	T cell activation	0:00:00
-10020	control of T cell activation	4:00:00
-10021	control of T cell activation	4:00:00
+100003	cutaneous T cell leukemia (CTCL)	0
+100005	cutaneous T cell leukemia (CTCL)	0
+100011	cutaneous T cell leukemia (CTCL)	0
+100001	T cell activation	4:00:00
+100001	T cell activation	2:00:00
+100001	T cell activation	1:00:00
+100001	T cell activation	0:00:00
