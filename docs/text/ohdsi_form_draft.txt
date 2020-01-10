@@ -1,0 +1,18 @@
+OMOPOmics is inspired by the standardized infrastructure enabled by the OMOP common data model. It is similar to G-CDM (Shin, Seo Jeong, et al) but is meant to generalize to other data types, serve as a ‘cohort builder’ based on reproducible queries, and promote better practices in recording information regarding biological experimentation and associated data. 
+
+OMOPOmics was created in January 2020 to show proof of concept and the importance for putting experimental data into the OMOP common data model. While this model has been primarily used for patient clinical data for insurance and claims purposes, we think this data infrastructure should be applied to biological experiments.
+
+We extended the OMOP common data model for characterizing experimentally-derived patient data, with a specific application towards T-cell data to better treat auto-inflammatory diseases.
+
+You can clone our GitHub repository with `git clone https://github.com/NCBI-Codeathons/OMOPOmics.git`
+
+This framework extension can enable things such as:
+
+1) Highlighting and enumerating data preparation, collection, perturbation, sampling, etc. information for biological samples. This can enable reproducibility of downstream analysis and retrospective analyses.
+2) Promoting integration of patient clinical as well as molecular information for precision medicine.
+3) Enabling interoperability of datasets for analyses across datasets and sites.
+
+This extension applies to both public datasets and to patient data from clinical settings. 
+
+
+
