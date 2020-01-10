@@ -14,10 +14,10 @@ condition_occurrence <- tbl(con,"condition_occurrence")
 person <- tbl(con,"person_table")
 provider <- tbl(con,"provider_table")
 specimen <- tbl(con,"specimen_table")
+perturbation <- tbl(con,"perturbation")
 
 # if you wish to add parameters for sequencing details, do so in the assay occurence table
 # assay_occurrence_parameters <- tbl(con,"assay_occurrence_parameters")
-
 
 # # EXAMPLE QUERY 1 ALL FEMALE PATIENTS W/ ATAC-seq
 # merge sample and person data
@@ -30,38 +30,38 @@ merge_1_b <- filter(merge_0_a, gender_source_value == "female") %>%
   distinct()
 
 # with associated ATAC-seq data
-merge_1_c <- inner_join(merge_1_b, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_source_value") %>% 
+merge_1_c <- inner_join(merge_1_b, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_id", copy = T) %>% 
   distinct()
 
 ?inner_join()
 # collect ATAC-seq peak file paths 
-merge_1_d <- inner_join(merge_1_c, assay_occurrence_data, by="specimen_id")
+merge_1_d <- inner_join(merge_1_c, assay_occurrence_data, by="specimen_id", copy = T)
 merge_1_d_comp <- compute(merge_1_d)
 merge_1_d_coll <- collect(merge_1_d_comp)
-all_CTCL_ATAC <- merge_1_e_coll$file_source_value
+all_female_ATAC <- merge_1_d_coll$file_source_value
 
 # export list of filepaths of ATAC-seq data
-write.csv(all_CTCL_ATAC, file = "data/cohorts/all_CTCL_ATAC.csv")
+write.csv(all_CTCL_ATAC, file = "data/cohorts/all_female_ATAC.csv")
 
 #_______________________________________________________________
 
-# # EXAMPLE QUERY 2
-# finding CTCL patients...
-merge_2_a <- condition_occurrence %>%
-  filter(condition_type_value == "cutaneous T cell leukemia (CTCL)") %>% 
-  inner_join(person, by = "person_id") %>% 
+# # EXAMPLE QUERY 2 ALL CTCL PATIENTS W/ ATAC SEQ
+# merge sample and person data
+merge_2_a <- person %>% 
+  inner_join(specimen, by = "person_id") %>% 
   distinct()
 
-# adding associated specimen_source_value to match against assay_occurance tables
-merge_2_b <-specimen %>% 
-  inner_join(merge_2_a, by="person_id") %>% 
+# finding CTCL patients...
+merge_2_b <- condition_occurrence %>%
+  filter(condition_type_value == "cutaneous T cell leukemia (CTCL)") %>% 
+  inner_join(merge_2_a, by = "person_id", copy = T) %>% 
   distinct()
 
 # selecting patients with ATAC-seq data
 merge_2_c <- assay_occurrence %>% 
   filter(assay_source_value == "ATAC") %>% 
   distinct() %>% 
-  inner_join(merge_2_b, by="specimen_id") %>% 
+  inner_join(merge_2_b, by="specimen_id", copy = T) %>% 
   distinct()
 
 # collect ATAC-seq peak file paths 
@@ -75,22 +75,40 @@ write.csv(all_CTCL_ATAC, file = "data/cohorts/all_CTCL_ATAC.csv")
 
 #_______________________________________________________________
 
-# # EXAMPLE QUERY 3 SEARCH FOR FEMALE DATA REGARDLESS OF CONDITION
-# finding female patients
+# # EXAMPLE QUERY 4 ALL SAMPLES WITH A RAPID T-Cell ACTIVATION TIMECOURSE
+# merge sample and person data
 merge_3_a <- person %>% 
-  filter(gender_source_value == "female") %>% 
   inner_join(specimen, by = "person_id") %>% 
   distinct()
 
-### NEEDS WORK 
-
-#_______________________________________________________________
-
-# # EXAMPLE QUERY 4 ALL SAMPLES WITH A RAPID TIMECOURSE
-# finding all patients
-merge_4_a <- person %>%
-  inner_join(specimen, by = "person_id") %>% 
+specimen
+# finding T-cell activation samples
+merge_3_b <- perturbation %>%
+  filter(perturbation_type_source_value == "activation") %>% 
+  inner_join(merge_3_a, by = "specimen_id", copy = T) %>% 
   distinct()
+
+# selecting patients with ATAC-seq data
+merge_2_c <- assay_occurrence %>% 
+  filter(assay_source_value == "ATAC") %>% 
+  distinct() %>% 
+  inner_join(merge_2_b, by="specimen_id", copy = T) %>% 
+  distinct()
+
+# collect ATAC-seq peak file paths 
+merge_2_d <- inner_join(merge_2_c, assay_occurrence_data, by="specimen_id")
+merge_2_d_comp <- compute(merge_2_d)
+merge_2_d_coll <- collect(merge_2_d_comp)
+all_CTCL_ATAC <- merge_2_d_coll$file_source_value
+
+# export list of filepaths of ATAC-seq data
+write.csv(all_CTCL_ATAC, file = "data/cohorts/all_CTCL_ATAC.csv")
+
+
+
+
+
+
 
 # with T-cell activation
 merge_4_b <- condition_occurrence %>%
