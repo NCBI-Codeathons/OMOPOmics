@@ -1,11 +1,11 @@
 ﻿specimen_id,assay_occurrence_id,specimen_source_value,perturbation_id,perturbation_source_value,perturbation_type_source_value,pereturbation_start_date,perturbation_dose_value_as_number,perturbation_dose_unit
-S1,A1,GSM1484803,Z1,,activation,4:00:00,,
-S2,A2,GSM1484802,Z2,,activation,2:00:00,,
-S3,A3,GSM1484801,Z3,,activation,1:00:00,,
-S4,A4,GSM1484800,Z4,,activation,0:00:00,,
-S11,A11,GSM1484793,Z5,,activation,4:00:00,,
-S12,A12,GSM1484792,Z6,,activation,4:00:00,,
-S13,A13,GSM1484791,Z7,,activation,2:00:00,,
-S14,A14,GSM1484790,Z8,,activation,1:00:00,,
-S15,A15,GSM1484789,Z9,,activation,0:00:00,,
-S21,A21,GSM1484783,Z10,,activation,4:00:00,,
+S1,A1,GSM1484803,Z1,ionomycin,activation,4:00:00,1,ug/mL
+S2,A2,GSM1484802,Z2,ionomycin,activation,2:00:00,1,ug/mL
+S3,A3,GSM1484801,Z3,ionomycin,activation,1:00:00,1,ug/mL
+S4,A4,GSM1484800,Z4,ionomycin,activation,0:00:00,1,ug/mL
+S11,A11,GSM1484793,Z5,placebo,activation,4:00:00,,
+S12,A12,GSM1484792,Z6,Phorbol Myristate Acetate,activation,4:00:00,20,ng/mL
+S13,A13,GSM1484791,Z7,Phorbol Myristate Acetate,activation,2:00:00,20,ng/mL
+S14,A14,GSM1484790,Z8,Phorbol Myristate Acetate,activation,1:00:00,20,ng/mL
+S15,A15,GSM1484789,Z9,Phorbol Myristate Acetate,activation,0:00:00,20,ng/mL
+S21,A21,GSM1484783,Z10,placebo,activation,4:00:00,,
