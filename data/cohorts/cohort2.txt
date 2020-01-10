@@ -1,0 +1,7 @@
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484808_Donor11_CTCL_Rep2.bed.gz
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484807_Donor11_CTCL_Rep1.bed.gz
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484812_Donor11_CTCL_Rep6.bed.gz
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484811_Donor11_CTCL_Rep5.bed.gz
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484810_Donor11_CTCL_Rep4.bed.gz
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484813_Donor11_CTCL_Rep7.bed.gz
+/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Data/GSE60682/GSM1484809_Donor11_CTCL_Rep3.bed.gz
