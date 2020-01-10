@@ -29,23 +29,60 @@ specimen <- read.csv(file = "OMOP_tables_copy/specimen.txt", header = T, sep = "
 
 # # EXAMPLE QUERY 1
 # finding male patients...
-merge1 <- person %>% filter(gender_source_value == "male") %>% inner_join(specimen, by = "person_id")
+merge_1_a <- person %>% 
+  filter(gender_source_value == "male") %>% 
+  inner_join(specimen, by = "person_id") %>% 
+  distinct()
 
 # with T-cell activation
-merge2 <- inner_join(merge1, condition_occurrence %>% filter(condition_source_value == "T cell activation"), by="person_id")
+merge_1_b <- condition_occurrence %>%
+  filter(condition_source_value == "T cell activation") %>% 
+  select(person_id,condition_source_value) %>% 
+  distinct() %>% 
+  inner_join(merge_1_a, by="person_id") %>% 
+  distinct()
 
 # with associated ATAC-seq data
-merge3 <- inner_join(merge2, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_source_value")
+merge_1_c <- inner_join(merge_1_b, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_source_value")
 
 # collect ATAC-seq peak file paths 
-merge4 <- inner_join(merge3, assay_occurrence_data, by="assay_occurrence_id")
-
-male_TCA_ATAC <- merge4$file_source_value
+merge_1_d <- inner_join(merge_1_c, assay_occurrence_data, by="assay_occurrence_id")
+male_TCA_ATAC <- merge_1_d$file_source_value
 
 # export list of filepaths of ATAC-seq data
 write.csv(male_TCA_ATAC, file = "data/cohorts/male_TCA_ATAC.csv")
 
+# # EXAMPLE QUERY 2 
+# isolates specimen_source_values of everyone that did not fall into query 1 
 
+## NEEDS WORK
+anti_join(merge_1_c, assay_occurrence, by="specimen_source_value")
+
+# # EXAMPLE QUERY 3
+# finding CTCL patients...
+merge_2_a <- condition_occurrence %>%
+  filter(condition_source_value == "cutaneous T cell leukemia (CTCL)") %>% 
+  inner_join(person, by = "person_id") %>% 
+  distinct()
+
+# adding associated specimen_source_value to match against assay_occurance tables
+merge_2_b <-specimen %>% 
+  inner_join(merge_2_a, by="person_id") %>% 
+  distinct()
+
+# selecting patients with ATAC-seq data
+merge_2_c <- assay_occurrence %>% 
+  filter(assay_source_value == "ATAC") %>% 
+  distinct() %>% 
+  inner_join(merge_2_a, by="person_id") %>% 
+  distinct()
+
+# with associated ATAC-seq data
+merge_1_c <- inner_join(merge_1_b, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_source_value")
+
+# collect ATAC-seq peak file paths 
+merge_1_d <- inner_join(merge_1_c, assay_occurrence_data, by="assay_occurrence_id")
+male_TCA_ATAC <- merge_1_d$file_source_value
 
 ?collect()
 show_query(merge1)
