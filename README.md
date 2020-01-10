@@ -26,7 +26,7 @@ We manually downloaded and extracted data from GSE60682 in the GEO database.
 
 We created a master data file with all the necessary data fields to create a minimally sufficient infrastructure in the OMOP CDM. 
 
-From the master data file, run the perl script  like `run `. This creates a directory of the OMOP formatted tables.
+From the master data file, run the perl script  like `run`. This creates a directory of the OMOP formatted tables.
 
 We then run `ls OMOP_tables/*.csv | csv-to-sqlite -o OMOP_tables.sqlite -D`  in the command line to initialize a SQLite database from the directory with the OMOP formatted tables.
 
@@ -45,9 +45,9 @@ From the SQL database, we use example queries that output patient and sample coh
 
 ![](docs/imgs/table_diagram.png)
 
-3. Initialize SQL database with `SQL_build.R` script 
+3. Initialize SQL database with `ls OMOP_tables/*.csv | csv-to-sqlite -o OMOP_tables.sqlite -D` command 
 
-4. Perform directed search query for specific terms 
+4. Load Perform directed search query for specific terms 
         e.g. **select** file_source_value **where** file_type_source_value == "BED" 
         **and** assay_source_value == ATAC **and** condition_source_value == "CTCL"
 
