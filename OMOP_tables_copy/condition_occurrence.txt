@@ -1,8 +1,0 @@
-person_id	condition_source_value	condition_start_date
-100003	cutaneous T cell leukemia (CTCL)	0
-100005	cutaneous T cell leukemia (CTCL)	0
-100011	cutaneous T cell leukemia (CTCL)	0
-100001	T cell activation	4:00:00
-100001	T cell activation	2:00:00
-100001	T cell activation	1:00:00
-100001	T cell activation	0:00:00

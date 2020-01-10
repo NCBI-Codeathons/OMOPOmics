@@ -1,1 +1,0 @@
-assay_occurrence_id	parameter	value
