@@ -33,16 +33,19 @@ We then run `SQL_build.R`  to initialize a SQL database from the directory with 
 From the SQL database, we use example queries that output patient and sample cohort files for use in downstream ATACSeq analysis pipelines. 
 
 
+
 # OMOPOmics framework step-by-step
 
 ![](docs/imgs/OMOPOmics_use_flowchart.png)
 
 1. Collect/Extract Data 
-        Collect detailed information regarding patient demographic, NGS assay parameters, 
+        Collect detailed information regarding patient demographic, NGS assay parameters, and treatment conditions
 
 2. Enter Data into Relevant Tables
 
-3. Initialize SQL database with `SQL_build.R` command 
+![](docs/imgs/table_diagram.png)
+
+3. Initialize SQL database with `SQL_build.R` script 
 
 4. Perform directed search query for specific terms 
         e.g. **select** file_source_value **where** file_type_source_value == "BED" 
