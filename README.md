@@ -1,14 +1,22 @@
 # OMOPOmics
 
-clone repository with `git clone https://github.com/NCBI-Codeathons/OMOPOmics.git` 
+OMOPOmics is inspired by the standardized infrastructure enabled by the OMOP common data model. 
 
-There exists limited infrastructure for matching patient electronic health records (EHR) to patient molecular samples. A standardized infrastructure, i.e. following the [OHDSI common data model](https://ohdsi.github.io/TheBookOfOhdsi/), allows for population and patient-level analyses to improve medical practice and understand disease. 
+Clinical and claims databases are adopting this data format promoted by Observational Health Data Science and Informatics (OHDSI). Patient data, agnostic of site, can be reproducibly extracted and analysed for generating population and patient-level evidence to improve the practice of medicine. 
 
-We propose extending an EHR common data model for characterizing associated patient data, with a specific application towards T-cell data to better treat auto-inflammatory diseases.
+This framework can be extended to include patient diagnostic and biological data enabling precision medicine. However, experimental data has traditionally not been integrated under this infrastructure. But recently these approaches are more accessible, efficient, and feasible, creating an opportunity to integrate this information. Under the OMOP framework, data from biological experiments with different disease states, time points, and perturbations can become more accessible and understood, as well as enable reproducibe analyses. 
+
+OMOPOmics was created in January 2020 to show proof of concept and the importance for putting experimental data into the OMOP common data model. While this model has been primarily used for patient clinical data for insurance and claims purposes, we think this data infrastructure should be applied to biological experiments. 
+
+We show from public datasets how we can store patient and sample data under the OMOP infrastructure, produce reproducible queries of generated data, and use custom bioinformatic analyses from cohort data that are outputs of the queries. 
+
+We propose extending the [OMOP common data model](https://ohdsi.github.io/TheBookOfOhdsi/) for characterizing associated patient data, with a specific application towards T-cell data to better treat auto-inflammatory diseases.
 
 ![](docs/imgs/chroma-t-cell_scheme.png)
 
-We have created an extension to the [OHDSI common data model](https://ohdsi.github.io/TheBookOfOhdsi/) towards patient T-cell 'omics profiling. We have evaluated our infrastructure with example queries and analyses (Qu et.al., 2015 [DOI](https://doi.org/10.1016/j.cels.2015.06.003.)).
+We have created an extension towards storing data from patient T-cell 'omics profiling. 
+
+We have evaluated our infrastructure with example queries and analyses (Qu et.al., 2015 [DOI](https://doi.org/10.1016/j.cels.2015.06.003.)).
 
 # Using Example OMOPOmics Dataset
 
