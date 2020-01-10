@@ -95,7 +95,7 @@ foreach my $line (@file) {
 	# initialize unique id's for all tables
 	$assay_occurrence_id = "A$array[0]";
 	$assay_occurrence_data_id = "AD$array[0]";
-	$assay_parameters_id = "AD$array[0]";
+	$assay_parameters_id = "AP$array[0]";
 	$specimen_id = "S$array[0]";
 
 	## specimen table values
