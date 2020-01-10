@@ -14,9 +14,15 @@ library(tidyverse)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
 library(scales)
 library(data.table)
+library(dbplyr)
+library(RSQLite)
+library(DBI)
+
 knitr::opts_chunk$set(echo = FALSE)
-source("/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Codes/dir_structure.R")
-base_dir<- file.path(dirs$code,"example_analysis")
+dirs      <- list(base=file.path("~/OMOPOmics"))
+dirs$data <- file.path(dirs$base,"data")
+dirs$code <- file.path(dirs$base,"src")
+base_dir<- file.path(dirs$code,"R/atac_example")
 filter  <- dplyr::filter
 select  <- dplyr::select
 mutate  <- dplyr::mutate
@@ -32,13 +38,16 @@ Question would be best answered with differential enrichment analyses, but we ca
 `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`
 
 `This section should be replaced with the R-version of the query function, whatever we end up with.`
-```{r loadDataSQL}
-#m_test <- read.csv("/pylon5/brz3a1p/codeathon/Chroma_T-Cell/OMOP_tables/molecular_test.txt")
+```{r loadDataSQL,eval=FALSE}
+ file.path(dirs$data,"cohorts/cohort1.txt") %>%
+                read.table(sep="\t",header=TRUE,stringsAsFactors = FALSE) %>%
+  as_tibble() %>%
+  mutate()
 ```
 
 
 ```{r loadDataManual}
-file_table  <- file.path(dirs$code,"GSE60682_details.tsv") %>%
+file_table  <- file.path(base_dir,"GSE60682_details.tsv") %>%
                 read.table(sep="\t",header = TRUE,stringsAsFactors = FALSE) %>%
                 as_tibble() %>%
                 filter(treatment=="T cell activation")
@@ -138,9 +147,37 @@ cbind(rbind(head(tib[[1]]),c("   ...","  ...")),
 ```
 
 
-
-
-##PCA of selected samples.
+##PCA of all peaks.
 ```{r atacPCA}
-beds
+get_overlapped_vals <- function(gr_quer=beds[[1]],
+                                gr_subj=uni_peaks,
+                                val_col = "col.1"){
+  olaps   <- findOverlaps(query=gr_quer,subject=gr_subj)
+  new_vals <- rep(0,length(gr_subj))
+  new_vals[subjectHits(olaps)] <- mcols(gr_quer)[[val_col]]
+  return(new_vals)
+}
+
+uni_peaks <- GenomicRanges::reduce(unlist(GRangesList(beds)))
+uni_peaks$peak_name <- paste("uni_peak",c(1:length(uni_peaks)),sep="_")
+peak_mtx  <- sapply(beds,get_overlapped_vals,val_col="col.2")
+min_val  <- min(peak_mtx)
+max_val   <- max(peak_mtx)
+nrm_mtx   <- apply(peak_mtx,c(1,2), function(x) (x-min_val)/(max_val - min_val))
+
+pcs       <- prcomp(nrm_mtx)
+ax_labs   <- pcs$sdev^2
+tib     <- pcs$rotation[,c("PC1","PC2")] %>%
+              as.data.frame() %>%
+              rownames_to_column("sample") %>%
+              as_tibble() %>%
+              mutate(time=str_match(sample,"TCA([:digit:])")[,2])
+
+ggplot(tib,aes(x=PC1,y=PC2,fill=time)) +
+  geom_point(size=8,pch=21,color='black') +
+  theme(panel.background=element_blank(),
+        panel.grid=element_line(size=0.5,color="lightgray"),
+        panel.border=element_rect(size=0.5,color="black",fill=NA))
+ggsave(file=file.path(base_dir,"pca_plot_col2.png"),height=6,width=10,unit="in",dpi=300)
+
 ```
