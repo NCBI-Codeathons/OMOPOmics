@@ -5,12 +5,25 @@ library(dplyr)
 library(dbplyr)
 library(RSQLite)
 library(lubridate)
-#install.packages(c("dbplyr", "RSQLite"))
-download.file(url = "https://ndownloader.figshare.com/files/2292171",
-              destfile = "data/example_SQL_db/portal_mammals.sqlite", mode = "wb")
+library(RMySQL)
+# #install.packages(c("dbplyr", "RSQLite"))
+# download.file(url = "https://ndownloader.figshare.com/files/2292171",
+#               destfile = "data/example_SQL_db/portal_mammals.sqlite", mode = "wb")
 
-con <- DBI::dbConnect(RSQLite::SQLite(), "data/GSE60682_db/sql_database.sql")
-dbListTables(con)
+# 
+# drv <- dbDriver("SQLite")
+# con <- dbConnect(drv, dbname = "sql_database.sqlite")
+# file.exists("sql_database.sqlite")
+# 
+# 
+# con <- dbConnect(RSQLite::SQLite(), 
+#                  dbname = "sql_database.sqlite")
+# con
+# 
+# con <- DBI::dbConnect(RSQLite::SQLite(), "data/GSE60682_db/sql_database.sql")
+# dbListTables(con)
+# 
+
 # assay_occurrence_data <- tbl(con,"assay_occurrence_data")
 # assay_occurrence_parameters <- tbl(con,"assay_occurrence_parameters")
 # assay_occurrence <- tbl(con,"assay_occurrence")
@@ -18,8 +31,6 @@ dbListTables(con)
 # person <- tbl(con,"person")
 # provider <- tbl(con,"provider")
 # specimen <- tbl(con,"specimen")
-
-?SQLite
 
 assay_occurrence_data <- read.csv(file = "OMOP_tables_copy/assay_occurrence_data.txt", header = T, sep = "\t")
 assay_occurrence_parameters <- read.csv(file = "OMOP_tables_copy/assay_occurrence_parameters.txt", header = T, sep = "\t")
@@ -116,21 +127,17 @@ merge_4_c <- assay_occurrence %>%
   inner_join(merge_4_b, by="specimen_source_value") %>% 
   distinct()
 
+# collect ATAC-seq peak file paths 
+merge_4_d <- inner_join(merge_4_c, assay_occurrence_data, by="assay_occurrence_id")
+all_Timecourse <- merge_4_c$file_source_value
+
+# export list of filepaths of ATAC-seq data
+write.csv(all_CTCL_ATAC, file = "data/cohorts/all_Timecourse.csv")
+
 
 pat 	<- "45 14:43:16"
 vals	<- str_match(pat,pattern="(^[:digit:]+) ([:digit:]{2}):([:digit:]{2}):([:digit:]{2})$")
 day 	<- as.integer(vals[2])
-
-
-?str_match
-a
-# # EXAMPLE QUERY 3
-# isolates specimen_source_values of everyone that did not fall into query 1 
-
-## NEEDS WORK
-anti_join(merge_1_c, assay_occurrence, by="specimen_source_value")
-#_______________________________________________________________
-
 ?collect()
 show_query(merge1)
 

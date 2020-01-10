@@ -54,49 +54,49 @@ reference_source_val VARCHAR(150),
 reference_genome_val VARCHAR(300) ,
 FOREIGN KEY (Specimen_id) REFERENCES SPECIMEN(Specimen_id) ON DELETE SET NULL);
 
-LOAD DATA LOCAL INFILE '\person_table.csv'
+LOAD DATA LOCAL INFILE 'OMOP_tables\person_table.csv'
   INTO TABLE PERSON
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
   
  Select * from person;
  
- LOAD DATA LOCAL INFILE '\provider_table.csv'
+ LOAD DATA LOCAL INFILE 'OMOP_tables\provider_table.csv'
   INTO TABLE PROVIDER
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
   
  Select * from PROVIDER;
  
- LOAD DATA LOCAL INFILE '\condition_occurence.csv'
+ LOAD DATA LOCAL INFILE 'OMOP_tables\condition_occurence.csv'
   INTO TABLE CONDOCCURENCE
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
   
  Select * from CONDOCCURENCE;
 
- LOAD DATA LOCAL INFILE '\specimen_table.csv'
+ LOAD DATA LOCAL INFILE 'OMOP_tables\specimen_table.csv'
   INTO TABLE SPECIMEN
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
   
  Select * from SPECIMEN;
  
-  LOAD DATA LOCAL INFILE '\assay_occurrence.csv'
+  LOAD DATA LOCAL INFILE 'OMOP_tables\assay_occurrence.csv'
   INTO TABLE ASSAYOCCURENCE
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
   
  Select * from ASSAYOCCURENCE;
  
-  LOAD DATA LOCAL INFILE '\assay_occurrence_data.csv'
+  LOAD DATA LOCAL INFILE 'OMOP_tables\assay_occurrence_data.csv'
   INTO TABLE ASSAYDATA
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
   
  Select * from ASSAYDATA;
  
-  LOAD DATA LOCAL INFILE '\assay_parameters.csv'
+  LOAD DATA LOCAL INFILE 'OMOP_tables\assay_parameters.csv'
   INTO TABLE ASSAYPARS
   FIELDS TERMINATED BY ','
   IGNORE 1 LINES;
