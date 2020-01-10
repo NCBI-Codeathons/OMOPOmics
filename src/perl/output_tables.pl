@@ -15,15 +15,19 @@ open(PRO_OUT, ">output/provider_table.csv") or die "ERROR: Cannot create file: $
 open(A_OUT, ">output/assay_occurrence.csv") or die "ERROR: Cannot create file: $!\n";
 open(AD_OUT, ">output/assay_occurrence_data.csv") or die "ERROR: Cannot create file: $!\n";
 open(AP_OUT, ">output/assay_parameters.csv") or die "ERROR: Cannot create file: $!\n";
-open(C_OUT, ">output/condition_occurence.csv") or die "ERROR: Cannot create file: $!\n";
+open(C_OUT, ">output/condition_occurrence.csv") or die "ERROR: Cannot create file: $!\n";
+open(PE_OUT, ">output/perturbation.csv") or die "ERROR: Cannot create file: $!\n";
+
 
 my $people_header = "person_id,gender_concept_id,person_source_value,gender_source_value\n";
-my $specimen_header = "specimen_id,specimen_source_value,specimen_type_source_value,person_id\n";
-my $provider_header = "provider_id,provider_source_value,provider_type_source_value,person_id\n";
-my $assay_occurrence_header = "assay_occurrence_id,specimen_source_value,assay_start_date,assay_source_value,assay_type_source_value,specimen_id\n";
-my $assay_occurrence_data_header = "assay_occurrence_data_id,file_source_value,specimen_id\n";
-my $assay_parameters_header = "assay_parameters_id,reference_source_value,reference_genome_value,specimen_id\n";
-my $condition_occurence_header = "condition_occurence_id,condition_type_value,person_id\n";
+my $specimen_header = "person_id,specimen_id,specimen_source_value,specimen_type_source_value\n";
+my $provider_header = "person_id,provider_id,provider_source_value,provider_type_source_value\n";
+my $assay_occurrence_header = "specimen_id,assay_occurrence_id,specimen_source_value,assay_start_date,assay_source_value,assay_type_source_value\n";
+my $assay_occurrence_data_header = "specimen_id,assay_occurrence_data_id,file_source_value\n";
+my $assay_parameters_header = "specimen_id,assay_parameters_id,reference_source_value,reference_genome_value\n";
+my $condition_occurence_header = "person_id,condition_occurence_id,condition_type_value\n";
+my $perturbation_header = "specimen_id,perturbation_id,perturbation_source_value,perturbation_type_source_value,pereturbation_start_date,perturbation_dose_value_as_number,perturbation_dose_unit\n";
+
 
 print P_OUT "$people_header";
 print S_OUT "$specimen_header";
@@ -32,23 +36,24 @@ print A_OUT "$assay_occurrence_header";
 print AD_OUT "$assay_occurrence_data_header";
 print AP_OUT "$assay_parameters_header";
 print C_OUT "$condition_occurence_header";
-
+print PE_OUT "$perturbation_header";
 
 my %gender_concept_id = (
    male => 8507,
    female => 8532,
-   NA => 8551
+   "NA" => 8551
 );
 
 my $count = 1;
 # initialize table column variables with 0 as default ( 0's represent unknown)
-my($gender_cid, $person_source_value, $gender_source_value) = (0, 0, 0); # person
-my($specimen_id, $specimen_source_value, $specimen_type_source_value) = (0, 0, 0); # specimen
-my($provider_id, $source_name, $source_value) = (0, "GEO", "GSE60682"); # source provider (# ideally should be in the input file)
-my($assay_occurrence_id, $assay_start_date, $assay_source_value, $assay_type_source_value) = (0, 0, 0, 0);
-my($assay_occurrence_data_id, $file_source_value) = (0, 0); # 
-my($assay_parameters_id, $reference_source_value, $reference_genome_value) = (0, 0, 0); # 
-my($condition_occurence_id, $condition_type_value) = (0, 0); # 
+my($gender_cid, $person_source_value, $gender_source_value) = ("NA", "NA", "NA"); # person
+my($specimen_id, $specimen_source_value, $specimen_type_source_value) = ("NA", "NA", "NA"); # specimen
+my($provider_id, $source_name, $source_value) = ("NA", "GEO", "GSE60682"); # source provider (# ideally should be in the input file)
+my($assay_occurrence_id, $assay_start_date, $assay_source_value, $assay_type_source_value) = ("NA", "NA", "NA", "NA");
+my($assay_occurrence_data_id, $file_source_value) = ("NA", "NA"); # 
+my($assay_parameters_id, $reference_source_value, $reference_genome_value) = ("NA", "NA", "NA"); # 
+my($condition_occurence_id, $condition_type_value) = ("NA", "NA"); # 
+my ($perturbation_id,$perturbation_source_value,$perturbation_type_source_value,$pereturbation_start_date,$perturbation_dose_value_as_number,$perturbation_dose_unit) = ("NA", "NA", "NA", "NA", "NA", "NA");
 
 # initialize unique id's for tables
 my %person_id;
@@ -74,7 +79,7 @@ foreach my $line (@file) {
 
 		# provider table
 		$provider_id= "P$array[1]";
-		print PRO_OUT "$provider_id,$source_name,$source_value,$array[1]\n"; 
+		print PRO_OUT "$array[1],$provider_id,$source_name,$source_value\n"; 
 
 	}
 
@@ -84,7 +89,7 @@ foreach my $line (@file) {
 	if ((!exists $condition_id{$patient_condition}) and $array[12] =~ /CTCL/) {
 		$condition_id{$patient_condition}++;
 		$condition_occurence_id = "C$array[1]";
-		print C_OUT "$condition_occurence_id,$array[12],$array[1]\n";
+		print C_OUT "$array[1],$condition_occurence_id,$array[12]\n";
 	}
 
 	# initialize unique id's for all tables
@@ -96,7 +101,7 @@ foreach my $line (@file) {
 	## specimen table values
 	$specimen_source_value = $array[5];
 	$specimen_type_source_value = $array[14];
-	print S_OUT "$specimen_id,$specimen_source_value,$specimen_type_source_value,$array[1]\n";
+	print S_OUT "$array[1],$specimen_id,$specimen_source_value,$specimen_type_source_value\n";
 
 	## assay_occurrence table values
 	$assay_start_date = $array[16];
@@ -113,17 +118,24 @@ foreach my $line (@file) {
 		$assay_start_date = "$assay_start_date-00:00:00";
 	}
 
-	print A_OUT "$assay_occurrence_id,$specimen_source_value,$assay_start_date,$assay_source_value,$assay_type_source_value,$specimen_id\n";
+	print A_OUT "$specimen_id,$assay_occurrence_id,$specimen_source_value,$assay_start_date,$assay_source_value,$assay_type_source_value\n";
 
 	## assay_occurrence_data table values
 	$file_source_value = $array[17];
-	print AD_OUT "$assay_occurrence_data_id,$file_source_value,$specimen_id\n";
+	print AD_OUT "$specimen_id,$assay_occurrence_data_id,$file_source_value\n";
 
 	## assay_parameters table values
 	$reference_source_value = $array[9];
 	$reference_genome_value = $array[18];
-	print AP_OUT "$assay_parameters_id,$reference_source_value,$reference_genome_value,$specimen_id\n";
+	print AP_OUT "$specimen_id,$assay_parameters_id,$reference_source_value,$reference_genome_value\n";
 
-	
+	## perturbation_table
+	$perturbation_id = "Z$array[0]";
+	$perturbation_source_value = $array[19];
+	$perturbation_type_source_value = $array[20];
+	$pereturbation_start_date = $array[21];
+	$perturbation_dose_value_as_number = $array[22];
+	$perturbation_dose_unit  = $array[23];
+	print PE_OUT "$specimen_id,$perturbation_id,$perturbation_source_value,$perturbation_type_source_value,$pereturbation_start_date,$perturbation_dose_value_as_number,$perturbation_dose_unit\n";
 
 }
