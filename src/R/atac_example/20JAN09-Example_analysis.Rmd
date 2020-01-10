@@ -1,0 +1,146 @@
+---
+title: 'Example: T-cell activation'
+author: "Andrew Clugston"
+date: "January 9, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(GenomicRanges)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+library(tidyverse)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(scales)
+library(data.table)
+knitr::opts_chunk$set(echo = FALSE)
+source("/pylon5/brz3a1p/codeathon/Chroma_T-Cell/Codes/dir_structure.R")
+base_dir<- file.path(dirs$code,"example_analysis")
+filter  <- dplyr::filter
+select  <- dplyr::select
+mutate  <- dplyr::mutate
+arrange <- dplyr::arrange
+rename  <- dplyr::rename
+melt    <- reshape2::melt
+```
+
+#Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
+
+Question would be best answered with differential enrichment analyses, but we can use BED files of accessible regions to provide a simple binary answer (promoter is open/closed) for each time point measured. We specify a query for:
+
+`Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`
+
+`This section should be replaced with the R-version of the query function, whatever we end up with.`
+```{r loadDataSQL}
+#m_test <- read.csv("/pylon5/brz3a1p/codeathon/Chroma_T-Cell/OMOP_tables/molecular_test.txt")
+```
+
+
+```{r loadDataManual}
+file_table  <- file.path(dirs$code,"GSE60682_details.tsv") %>%
+                read.table(sep="\t",header = TRUE,stringsAsFactors = FALSE) %>%
+                as_tibble() %>%
+                filter(treatment=="T cell activation")
+tst_table   <- file_table %>% select(file_name,sample_name,cell.type,treatment,time.point,local_file_name)
+#kable(tst_file)
+
+#Get promoters.
+proms       <- promoters(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+#Read BED files.
+read_bed_file   <- function(bed_file_name=tst_table$local_file_name[1]){
+  base_col_names<- c("seqnames","start","end","name","score","strand")
+  tib <- as_tibble(fread(bed_file_name,sep="\t"))
+  if(ncol(tib) > length(base_col_names)){
+    base_col_names  <- c(base_col_names,paste0("col.",seq(from=1,to=ncol(tib)-length(base_col_names))))
+  }
+  colnames(tib)   <- base_col_names
+  return(makeGRangesFromDataFrame(tib,keep.extra.columns = TRUE))
+}
+beds              <- lapply(tst_table$local_file_name,read_bed_file)
+names(beds)  <- tst_table$file_name
+```
+
+##Promoters that change accessibility on T-cell activation.
+```{r prepareTest,fig.height=5,fig.width=7}
+test_overlaps   <- function(gr_quer=beds[[1]],gr_subj=proms){
+  olaps <- findOverlaps(query = gr_quer,subject = gr_subj)
+  out_vec <- rep(FALSE,length(gr_subj))
+  out_vec[subjectHits(olaps)] <- TRUE
+  return(out_vec)
+}
+olap_tib <- lapply(beds,test_overlaps) %>%
+              do.call(cbind,.) %>%
+              as_tibble() %>%
+              mutate(tx_name = proms$tx_name) %>%
+              select(tx_name,everything())
+repd_tib_long <- olap_tib %>%
+                  melt(id.vars="tx_name",
+                       value.name = "accessible",
+                       variable.name = "sample") %>%
+                  mutate(time = str_match(sample,pattern="([:digit:])hrs.+$")[,2],
+                         rep = str_match(sample,pattern="Rep([:digit:]$)")[,2]) %>%
+                  as_tibble() %>%
+                  group_by(tx_name,time) %>%
+                  summarize(accessible=all(accessible)) %>%
+                  ungroup()
+repd_tib  <- repd_tib_long %>% 
+              spread(key=time,value=accessible) %>%
+              mutate(change = case_when(`0`==FALSE & (`1`==TRUE & `2`==TRUE & `4`==TRUE) ~ "Opening",
+                                        `0`==TRUE & (`1`==FALSE & `2`==FALSE & `4`==FALSE) ~ "Closing",
+                                        TRUE ~ "Uncertain")) %>%
+              filter(change != "Uncertain")
+```
+```{r plotPeakNumbers}
+tib <- repd_tib_long  %>%
+         group_by(tx_name,time) %>%
+         summarize(accessible=all(accessible)) %>%
+         ungroup() %>% group_by(accessible,time) %>%
+         tally() %>%
+         filter(accessible)
+  
+ggplot(tib,aes(x=as.factor(time),y=n,fill=as.factor(time))) +
+       geom_bar(stat="identity",color="black") +
+       scale_y_continuous(name="Accessible promotersr",expand=expand_scale(mult=c(0,0.1)),label=comma) +
+       scale_x_discrete(name="Hours post-activation") +
+       ggtitle("Accessible T-cell promoters following T-cell activation",
+               subtitle="Replicated promoters only.") +
+       theme(panel.background = element_blank(),
+             panel.border = element_rect(size=0.5,color="black",fill=NA),
+             panel.grid = element_blank(),
+             panel.grid.major.y = element_line(size=0.5,color="lightgray"),
+             legend.position="none",
+             plot.subtitle = element_text(hjust=0,face="italic"),
+             axis.text = element_text(size=15),
+             axis.title=element_text(size=20))
+ggsave(filename = file.path(base_dir,"peak_count_plot.png"),device = "png",width = 6,height = 4,units = "in",dpi=300)
+```
+```{r tallyChanges}
+repd_tib %>%
+  group_by(change) %>%
+  tally() %>%
+  kable()
+```
+
+##Transcripts with changing promoters.
+```{r exampleGenes}
+tib  <- repd_tib %>%
+          select(tx_name,change) %>%
+          dplyr::rename(`Transcript ID`=tx_name,
+                 Change=change) %>%
+          group_by(Change) %>%
+          group_split()
+
+cbind(rbind(head(tib[[1]]),c("   ...","  ...")),
+      rbind(head(tib[[2]]),c("   ...","  ..."))) %>%
+  kable() %>% kable_styling(full_width=FALSE)
+```
+
+
+
+
+##PCA of selected samples.
+```{r atacPCA}
+beds
+```
