@@ -1,4 +1,4 @@
-condition_occurence_id,condition_type_value,person_id
-C100005,cutaneous T cell leukemia (CTCL),100005
-C100011,cutaneous T cell leukemia (CTCL),100011
-C100012,cutaneous T cell leukemia (CTCL),100012
+person_id,condition_occurence_id,condition_type_value
+100005,C100005,cutaneous T cell leukemia (CTCL)
+100011,C100011,cutaneous T cell leukemia (CTCL)
+100012,C100012,cutaneous T cell leukemia (CTCL)
