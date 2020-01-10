@@ -85,21 +85,21 @@ specimen
 # finding T-cell activation samples
 merge_3_b <- perturbation %>%
   filter(perturbation_type_source_value == "activation") %>% 
-  inner_join(merge_3_a, by = "specimen_id", copy = T) %>% 
+  inner_join(merge_3_a, copy = T) %>% 
   distinct()
 
 # selecting patients with ATAC-seq data
-merge_2_c <- assay_occurrence %>% 
+merge_3_c <- assay_occurrence %>% 
   filter(assay_source_value == "ATAC") %>% 
   distinct() %>% 
-  inner_join(merge_2_b, by="specimen_id", copy = T) %>% 
+  inner_join(merge_3_b, by="specimen_id", copy = T) %>% 
   distinct()
 
 # collect ATAC-seq peak file paths 
-merge_2_d <- inner_join(merge_2_c, assay_occurrence_data, by="specimen_id")
-merge_2_d_comp <- compute(merge_2_d)
-merge_2_d_coll <- collect(merge_2_d_comp)
-all_CTCL_ATAC <- merge_2_d_coll$file_source_value
+merge_3_d <- inner_join(merge_3_c, assay_occurrence_data, by="specimen_id")
+merge_3_d_comp <- compute(merge_3_d)
+merge_3_d_coll <- collect(merge_3_d_comp)
+TimeCourse <- merge_3_d_coll$file_source_value
 
 # export list of filepaths of ATAC-seq data
 write.csv(all_CTCL_ATAC, file = "data/cohorts/all_CTCL_ATAC.csv")

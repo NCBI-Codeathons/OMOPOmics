@@ -1,5 +1,7 @@
 # OMOPOmics
 
+DOWNLOAD REPOSITORY WITH `git clone https://github.com/NCBI-Codeathons/OMOPOmics.git`
+
 ## Motivation 
 
 OMOPOmics is inspired by the standardized infrastructure enabled by the OMOP common data model. 
