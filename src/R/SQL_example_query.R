@@ -34,6 +34,15 @@ specimen <- tbl(con,"specimen_table")
 # specimen <- read.csv(file = "OMOP_tables_copy/specimen.txt", header = T, sep = "\t")
 
 # # EXAMPLE QUERY 1
+# merge sample and person data
+merge_0_a <- person %>% 
+  inner_join(specimen, by = "person_id") %>% 
+  distinct()
+
+merge_0_b <- filter(merge_0_a, gender_source_value == "female")
+
+merge_0_c <- 
+  
 # finding male patients...
 merge_1_a <- person %>% 
   filter(gender_source_value == "male") %>% 
@@ -47,7 +56,6 @@ merge_1_b <- condition_occurrence %>%
   distinct() %>% 
   inner_join(merge_1_a, by="person_id") %>% 
   distinct()
-
 
 # with associated ATAC-seq data
 merge_1_c <- inner_join(merge_1_b, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_source_value")
