@@ -1,6 +1,6 @@
 # OMOPOmics
 
-DOWNLOAD REPOSITORY WITH `git clone https://github.com/NCBI-Codeathons/OMOPOmics.git`
+DOWNLOAD REPOSITORY WITH `git clone https://github.com/NCBI-Codeathons/OMOPOmics.git`!!!
 
 ## Motivation 
 
