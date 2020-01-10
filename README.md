@@ -36,7 +36,7 @@ From the SQL database, we use example queries that output patient and sample coh
 
 
 
-# OMOPOmics framework step-by-step
+## OMOPOmics framework step-by-step
 
 ![](docs/imgs/OMOPOmics_use_flowchart.png)
 
