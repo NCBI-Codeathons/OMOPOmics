@@ -28,7 +28,7 @@ We created a master data file with all the necessary data fields to create a min
 
 From the master data file, run the perl script  like `run `. This creates a directory of the OMOP formatted tables.
 
-We then run `SQL_build.R`  to initialize a SQL database from the directory with the OMOP formatted tables.
+We then run `ls OMOP_tables/*.csv | csv-to-sqlite -o OMOP_tables.sqlite -D`  in the command line to initialize a SQLite database from the directory with the OMOP formatted tables.
 
 From the SQL database, we use example queries that output patient and sample cohort files for use in downstream ATACSeq analysis pipelines. 
 
