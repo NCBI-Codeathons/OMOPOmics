@@ -1,8 +1,13 @@
-# setwd to OMOPomics
+# loads packages
 library(lubridate)
 library(DBI)
 library(RSQLite)
+library(here)
 library(tidyverse)
+
+# setwd to OMOPomics
+setwd(here())
+here()
 
 # connects to SQL database
 con <- DBI::dbConnect(RSQLite::SQLite(), "OMOP_tables.sqlite")

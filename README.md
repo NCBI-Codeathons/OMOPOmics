@@ -59,6 +59,6 @@ The tables are written in a folder called `output/`.
 
 `ls data/OMOP_tables/*.csv | csv-to-sqlite -o data/OMOP_tables.sqlite -D`
 
-4. Query database *Need command*
+4. Query database  `Rscript ./src/R/SQL_example_query.R`
         
 5. Execute downstream analysis *Need command*
