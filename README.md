@@ -41,12 +41,17 @@ git clone https://github.com/NCBI-Codeathons/OMOPOmics.git
 pip install -r requirements.txt
 ```
 2. Create OMOP formatted tables from standardized experimental data format.
+### Usage of code:
 ```
-perl output_tables.pl <tab-delimited file>
-e.g.,
+$ perl output_tables.pl 
+Usage: output_tables.pl <sample_summary.tsv> <output_dir>
+```
+### Example:
+```
+$ perl output_tables.pl GSE60682_details.tsv ../../OMOP_tables
+```
 
-perl output_tables.pl GSE60682_details.tsv
-```
+
 The tables are written in a folder called `output/`.
 
 3. Create SQL database from OMOP formatted tables: 
