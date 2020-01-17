@@ -3,7 +3,7 @@ use warnings;
 use Data::Dumper;
 
 if (@ARGV != 2) {
-	die "Usage: output_tables.pl <sample_summary.tsv> <output_dir>\n";
+	die "Usage: perl output_tables.pl <sample_summary.tsv> <output_dir>\n";
 }
 
 open(IN, $ARGV[0]) or die "ERROR: Cannot open $ARGV[0]: $!\n";
