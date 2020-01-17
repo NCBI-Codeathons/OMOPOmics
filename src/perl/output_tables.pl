@@ -9,6 +9,7 @@ if (@ARGV != 1) {
 open(IN, $ARGV[0]) or die "ERROR: Cannot open $ARGV[0]: $!\n";
 my @file = <IN>; chomp @file;
 
+system("mkdir -p output"); # create a output folder to write tables
 open(P_OUT, ">output/person_table.csv") or die "ERROR: Cannot create file: $!\n";
 open(S_OUT, ">output/specimen_table.csv") or die "ERROR: Cannot create file: $!\n";
 open(PRO_OUT, ">output/provider_table.csv") or die "ERROR: Cannot create file: $!\n";
