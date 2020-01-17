@@ -26,15 +26,13 @@ We extended the [OMOP common data model](https://ohdsi.github.io/TheBookOfOhdsi/
 
 We have evaluated our infrastructure using example queries and analyses of patient ATAC-seq data sets from individuals with cutaneous T-cell lymphoma, healthy individuals with T-cell activation, or control patients (Qu et.al., 2015 [DOI](https://doi.org/10.1016/j.cels.2015.06.003.)). We manually downloaded and extracted data from GSE60682 in the GEO database. 
 
-We show how to implement standardization of experimental data:
+We show how to implement standardization of experimental data, to form a database, and to reproducibly query the data and run downstream analysis:
 
 ![](docs/imgs/OMOPOmics_use_flowchart.png)
 
-From this standardized format, the researcher can reproducibly query the data and run downstream analysis.
-
 We give an example below. 
 
-## Implementation
+## Example Implementation
 
 1. Download and install requirements
 
