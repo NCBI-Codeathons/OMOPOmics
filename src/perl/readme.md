@@ -1,4 +1,4 @@
-Usage of code:
+### Usage of code:
 ```
 $ perl output_tables.pl 
 Usage: output_tables.pl <sample_summary.tsv> <output_dir>
