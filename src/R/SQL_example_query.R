@@ -1,5 +1,4 @@
 # setwd to OMOPomics
-setwd("")
 library(lubridate)
 library(DBI)
 library(RSQLite)
@@ -110,7 +109,7 @@ merge_3_d_coll <- collect(merge_3_d_comp)
 TimeCourse <- merge_3_d_coll$file_source_value
 
 # export list of filepaths of ATAC-seq data
-write.csv(all_TimeCourse, file = "data/cohorts/all_TimeCourse.csv")
+write.csv(TimeCourse, file = "data/cohorts/all_TimeCourse.csv")
 
 
 
