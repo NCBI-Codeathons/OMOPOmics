@@ -57,7 +57,7 @@ The tables are written in a folder called `output/`.
 
 3. Create SQL database from OMOP formatted tables: 
 
-`ls OMOP_tables/*.csv | csv-to-sqlite -o OMOP_tables.sqlite -D`
+`ls data/OMOP_tables/*.csv | csv-to-sqlite -o data/OMOP_tables.sqlite -D`
 
 4. Query database *Need command*
         
