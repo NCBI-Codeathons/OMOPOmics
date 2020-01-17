@@ -40,13 +40,13 @@ We give an example below.
 git clone https://github.com/NCBI-Codeathons/OMOPOmics.git
 pip install -r requirements.txt
 ```
-2. Create OMOP formatted tables from standardized experimental data format. <Need command>
+2. Create OMOP formatted tables from standardized experimental data format. *Need command*
 
 
 3. Create SQL database from OMOP formatted tables: 
 
 `ls OMOP_tables/*.csv | csv-to-sqlite -o OMOP_tables.sqlite -D`
 
-4. Query database <Need command>
+4. Query database *Need command*
         
-5. Execute downstream analysis <Need command>
+5. Execute downstream analysis *Need command*
