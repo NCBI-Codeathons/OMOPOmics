@@ -42,6 +42,9 @@ pip install -r requirements.txt
 ```
 2. Create OMOP formatted tables from standardized experimental data format.
 ```
+perl output_tables.pl <tab-delimited file>
+e.g.,
+
 perl output_tables.pl GSE60682_details.tsv
 ```
 The tables are written in a folder called `output/`.
