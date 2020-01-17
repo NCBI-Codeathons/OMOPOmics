@@ -2,22 +2,22 @@ use strict;
 use warnings;
 use Data::Dumper;
 
-if (@ARGV != 1) {
-	die "Usage: output_tables.pl <sample_summary.txt>\n";
+if (@ARGV != 2) {
+	die "Usage: output_tables.pl <sample_summary.tsv> <output_dir>\n";
 }
 
 open(IN, $ARGV[0]) or die "ERROR: Cannot open $ARGV[0]: $!\n";
 my @file = <IN>; chomp @file;
 
-system("mkdir -p output"); # create a output folder to write tables
-open(P_OUT, ">output/person_table.csv") or die "ERROR: Cannot create file: $!\n";
-open(S_OUT, ">output/specimen_table.csv") or die "ERROR: Cannot create file: $!\n";
-open(PRO_OUT, ">output/provider_table.csv") or die "ERROR: Cannot create file: $!\n";
-open(A_OUT, ">output/assay_occurrence.csv") or die "ERROR: Cannot create file: $!\n";
-open(AD_OUT, ">output/assay_occurrence_data.csv") or die "ERROR: Cannot create file: $!\n";
-open(AP_OUT, ">output/assay_parameters.csv") or die "ERROR: Cannot create file: $!\n";
-open(C_OUT, ">output/condition_occurrence.csv") or die "ERROR: Cannot create file: $!\n";
-open(PE_OUT, ">output/perturbation.csv") or die "ERROR: Cannot create file: $!\n";
+system("mkdir -p $ARGV[1]"); # create a output folder to write tables
+open(P_OUT, ">$ARGV[1]/person_table.csv") or die "ERROR: Cannot create file: $!\n";
+open(S_OUT, ">$ARGV[1]/specimen_table.csv") or die "ERROR: Cannot create file: $!\n";
+open(PRO_OUT, ">$ARGV[1]/provider_table.csv") or die "ERROR: Cannot create file: $!\n";
+open(A_OUT, ">$ARGV[1]/assay_occurrence.csv") or die "ERROR: Cannot create file: $!\n";
+open(AD_OUT, ">$ARGV[1]/assay_occurrence_data.csv") or die "ERROR: Cannot create file: $!\n";
+open(AP_OUT, ">$ARGV[1]/assay_parameters.csv") or die "ERROR: Cannot create file: $!\n";
+open(C_OUT, ">$ARGV[1]/condition_occurrence.csv") or die "ERROR: Cannot create file: $!\n";
+open(PE_OUT, ">$ARGV[1]/perturbation.csv") or die "ERROR: Cannot create file: $!\n";
 
 
 my $people_header = "person_id,gender_concept_id,person_source_value,gender_source_value\n";
