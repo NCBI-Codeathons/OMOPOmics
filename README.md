@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ### Usage of code:
 ```
 $ perl output_tables.pl 
-Usage: output_tables.pl <sample_summary.tsv> <output_dir>
+Usage: perl output_tables.pl <sample_summary.tsv> <output_dir>
 ```
 ### Example:
 ```
