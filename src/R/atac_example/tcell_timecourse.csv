@@ -1,0 +1,11 @@
+file_source_value,perturbation_source_value,perturbation_start_date
+data/GSE60682_RAW/GSM1484783_Donor1_4hrsControl_Rep1.bed.gz,placebo,4:00:00
+data/GSE60682_RAW/GSM1484784_Donor1_4hrsControl_Rep2.bed.gz,placebo,4:00:00
+data/GSE60682_RAW/GSM1484796_Donor1_TCA0hrs_Rep1.bed.gz,ionomycin,0:00:00
+data/GSE60682_RAW/GSM1484797_Donor1_TCA0hrs_Rep2.bed.gz,ionomycin,0:00:00
+data/GSE60682_RAW/GSM1484798_Donor1_TCA1hrs_Rep1.bed.gz,ionomycin,1:00:00
+data/GSE60682_RAW/GSM1484799_Donor1_TCA1hrs_Rep2.bed.gz,ionomycin,1:00:00
+data/GSE60682_RAW/GSM1484800_Donor1_TCA2hrs_Rep1.bed.gz,ionomycin,2:00:00
+data/GSE60682_RAW/GSM1484801_Donor1_TCA2hrs_Rep2.bed.gz,ionomycin,2:00:00
+data/GSE60682_RAW/GSM1484802_Donor1_TCA4hrs_Rep1.bed.gz,ionomycin,4:00:00
+data/GSE60682_RAW/GSM1484803_Donor1_TCA4hrs_Rep2.bed.gz,ionomycin,4:00:00
