@@ -2,11 +2,11 @@
 
 ## TLDR
 
-OMOPOmics facilitates the transition of standardizing experimental datasets for reproducible research.
+OMOPOmics facilitates standardizing experimental datasets for reproducible research.
 
 ## Motivation 
 
-Clinical and claims databases are adopting this data format promoted by Observational Health Data Science and Informatics (OHDSI). Patient data, agnostic of site, can be reproducibly extracted and analysed for generating population and patient-level evidence to improve medical practice. 
+Clinical and claims databases are adopting a common data model data format promoted by Observational Health Data Science and Informatics (OHDSI). Patient data, agnostic of site, can be reproducibly extracted and analysed for generating population and patient-level evidence to improve medical practice. 
 
 This framework can be extended to include patient diagnostic and biological data enabling precision medicine. 
 
@@ -14,17 +14,17 @@ This framework can be extended to include patient diagnostic and biological data
 
 However, experimental data has traditionally not been integrated under this infrastructure. But recently these approaches are more accessible, efficient, and feasible, creating an opportunity to integrate this information. Under the OMOP framework, data from biological experiments with different attributes such as disease states, time points, and perturbations can become more accessible and understood, as well as enable reproducibe analyses. 
 
-OMOPOmics was created in January 2020 to show proof of concept and the importance for putting experimental data into the OMOP common data model. While this model has been primarily used for patient clinical data for insurance and claims purposes, we think this data infrastructure should be applied to biological experiments. 
+OMOPOmics was created in January 2020 to show proof of concept and the importance for putting experimental data into the OMOP common data model. While this model has been primarily used for patient clinical data for insurance and claims purposes, this data infrastructure should be applied to biological experiments. 
 
-We show from public datasets how we can store patient and sample data. Under the OMOP infrastructure, we produce reproducible queries of patient data for downstream use by custom bioinformatic analyses. 
+We show from public datasets how we can store patient and sample data. Under the OMOP infrastructure, we produce reproducible queries of patient data for downstream use by custom bioinformatic analyses. The question and/or hypothesis should drive the analysis of patient derived experimental data, whether high throughput assays or clinical diagnostic tests. With standardized infrastructure, this data can be reproducibly extracted for performing analyses. While other common data models like the G-CDM stadardize genomic information for use and interpretation by clinicians directly, this framework allows for teams of bioinformaticians and data scientists to support clinicians and researchers by performing analyses over this infrastructure for a wide range of applications and decision support. 
 
-## Workflow
+## Application of OMOPOmics
 
 We extended the [OMOP common data model](https://ohdsi.github.io/TheBookOfOhdsi/) for characterizing experimentally-derived patient data, with a specific application towards T-cell data to better treat auto-inflammatory diseases.
 
 ![](docs/imgs/table_diagram.png)
 
-We have evaluated our infrastructure using example queries and analyses of patient ATAC-seq data sets from individuals with cutaneous T-cell lymphoma, healthy individuals with T-cell activation, or control patients (Qu et.al., 2015 [DOI](https://doi.org/10.1016/j.cels.2015.06.003.)). We manually downloaded and extracted data from GSE60682 in the GEO database. 
+We evaluated our infrastructure using example queries and analyses of patient ATAC-seq data sets from individuals with cutaneous T-cell lymphoma, healthy individuals with T-cell activation, or control patients (Qu et.al., 2015 [DOI](https://doi.org/10.1016/j.cels.2015.06.003.)). We manually downloaded and extracted data from GSE60682 in the GEO database. 
 
 We show how to implement standardization of experimental data, to form a database, and to reproducibly query the data and run downstream analysis:
 
@@ -32,33 +32,28 @@ We show how to implement standardization of experimental data, to form a databas
 
 We give an example below. 
 
-## Example Implementation
+### Implementation
 
 1. Download and install requirements
 
 ```
 git clone https://github.com/NCBI-Codeathons/OMOPOmics.git
+cd OMOPOmics/
 pip install -r requirements.txt
 ```
+
 2. Create OMOP formatted tables from standardized experimental data format.
 
-### Usage of code:
 ```
-$ perl output_tables.pl 
-Usage: perl output_tables.pl <sample_summary.tsv> <output_dir>
+$ perl src/perl/output_tables.pl data/GSE60682_standard.tsv data/OMOP_tables
 ```
-### Example:
-```
-$ perl output_tables.pl GSE60682_details.tsv ../../data/OMOP_tables
-```
-
-
-The tables are written in a folder called `output/`.
 
 3. Create SQL database from OMOP formatted tables: 
 
 `ls data/OMOP_tables/*.csv | csv-to-sqlite -o data/OMOP_tables.sqlite -D`
 
-4. Query database  `Rscript ./src/R/SQL_example_query.R`
+4. Query database  and output cohort files into data/cohort
+
+`Rscript src/R/SQL_example_query.R`
         
-5. Execute downstream analysis *Need command*
+5. Execute downstream analysis **Result webpage at src/R/atac_example/20JAN09-Example_analysis.html**
