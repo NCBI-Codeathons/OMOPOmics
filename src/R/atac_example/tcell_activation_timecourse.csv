@@ -1,9 +1,11 @@
-person_id,file_source_value,reference_genome_value,gender_source_value,perturbation_source_value,perturbation_type_source_value,pereturbation_start_date,perturbation_dose_value_as_number
-100001,data/GSE60682_RAW/GSM1484789_Donor1_Day224_Rep1.bed.gz,hg19,male,Phorbol Myristate Acetate,activation,0:00:00,20
-100001,data/GSE60682_RAW/GSM1484790_Donor1_Day224_Rep2.bed.gz,hg19,male,Phorbol Myristate Acetate,activation,1:00:00,20
-100001,data/GSE60682_RAW/GSM1484791_Donor1_Day37_Rep1.bed.gz,hg19,male,Phorbol Myristate Acetate,activation,2:00:00,20
-100001,data/GSE60682_RAW/GSM1484792_Donor1_Day37_Rep2.bed.gz,hg19,male,Phorbol Myristate Acetate,activation,4:00:00,20
-100001,data/GSE60682_RAW/GSM1484800_Donor1_TCA2hrs_Rep1.bed.gz,hg19,male,ionomycin,activation,0:00:00,1
-100001,data/GSE60682_RAW/GSM1484801_Donor1_TCA2hrs_Rep2.bed.gz,hg19,male,ionomycin,activation,1:00:00,1
-100001,data/GSE60682_RAW/GSM1484802_Donor1_TCA4hrs_Rep1.bed.gz,hg19,male,ionomycin,activation,2:00:00,1
-100001,data/GSE60682_RAW/GSM1484803_Donor1_TCA4hrs_Rep2.bed.gz,hg19,male,ionomycin,activation,4:00:00,1
+assay_start_date,assay_source_value,file_source_value,gender_source_value
+4:00:00,ATAC,data/GSE60682_RAW/GSM1484783_Donor1_4hrsControl_Rep1.bed.gz,male
+4:00:00,ATAC,data/GSE60682_RAW/GSM1484784_Donor1_4hrsControl_Rep2.bed.gz,male
+0:00:00,ATAC,data/GSE60682_RAW/GSM1484796_Donor1_TCA0hrs_Rep1.bed.gz,male
+0:00:00,ATAC,data/GSE60682_RAW/GSM1484797_Donor1_TCA0hrs_Rep2.bed.gz,male
+1:00:00,ATAC,data/GSE60682_RAW/GSM1484798_Donor1_TCA1hrs_Rep1.bed.gz,male
+1:00:00,ATAC,data/GSE60682_RAW/GSM1484799_Donor1_TCA1hrs_Rep2.bed.gz,male
+2:00:00,ATAC,data/GSE60682_RAW/GSM1484800_Donor1_TCA2hrs_Rep1.bed.gz,male
+2:00:00,ATAC,data/GSE60682_RAW/GSM1484801_Donor1_TCA2hrs_Rep2.bed.gz,male
+4:00:00,ATAC,data/GSE60682_RAW/GSM1484802_Donor1_TCA4hrs_Rep1.bed.gz,male
+4:00:00,ATAC,data/GSE60682_RAW/GSM1484803_Donor1_TCA4hrs_Rep2.bed.gz,male

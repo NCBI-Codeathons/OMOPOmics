@@ -5,13 +5,12 @@ library(dbplyr)
 library(lubridate)
 library(DBI)
 library(RSQLite)
-library(here)
 library(DT)
 library(tidyverse)
-
+library(here)
 # setwd to OMOPomics
+here        <- here::here
 setwd(here())
-here()
 base_dir    <- file.path(here(),"src","R","shiny","OMOPOmics")
 data_dir    <- file.path(here(),"data")
 

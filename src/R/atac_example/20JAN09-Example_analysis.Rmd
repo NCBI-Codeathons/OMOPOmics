@@ -20,6 +20,7 @@ library(DBI)
 library(here)
 
 # setwd to OMOPomics
+here      <- here::here
 setwd(here())
 here()
 base_dir    <- file.path(here(),"src","R","atac_example")
@@ -35,40 +36,38 @@ melt      <- reshape2::melt
 ```
 
 #Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
-
 ##1. Submit SQL query to pull out samples based on T-cell activation.
 
-Database includese samples with activation of `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`. Using 
-Question would be best answered with differential enrichment analyses, but we can use BED files of accessible regions to provide a simple binary answer (promoter is open/closed) for each time point measured. We specify a query for:
-
-
+Database includes samples with activation of `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`. OMOPOmics allows for basic SQL queries which retreieve these samples along with columns of additional information for these samples.
 
 ![file.path(dirs$code,"R/atac_example/shiny_example.PNG")](OMPOmics UI concept)
 
-##1
+##2. Load query output.
 ```{r loadDataManual}
 input_file  <- file.path(base_dir,"tcell_activation_timecourse.csv")
 tst_table   <- read.table(input_file,sep=",",header = TRUE,stringsAsFactors = FALSE) %>%
                 as_tibble()
 kable(tst_table) %>% kable_styling(full_width=FALSE)
-#tst_table   <- file_table %>% select(file_name,sample_name,cell.type,treatment,time.point,local_file_name)
-#kable(tst_file)
+```
 
-#Get promoters.
+##3. Load additional data.
+```{r loadPromoterData}
 proms       <- promoters(TxDb.Hsapiens.UCSC.hg19.knownGene)
+```
 
-#Read BED files.
-read_bed_file   <- function(bed_file_name=tst_table$local_file_name[1]){
-  base_col_names<- c("seqnames","start","end","name","score","strand")
+##4. Read in associated data files.
+```{r readBedFiles}
+read_bed_file     <- function(bed_file_name=tst_table$local_file_name[1]){
+  base_col_names  <- c("seqnames","start","end","name","score","strand")
   tib <- as_tibble(fread(bed_file_name,sep="\t"))
   if(ncol(tib) > length(base_col_names)){
-    base_col_names  <- c(base_col_names,paste0("col.",seq(from=1,to=ncol(tib)-length(base_col_names))))
+    base_col_names<- c(base_col_names,paste0("col.",seq(from=1,to=ncol(tib)-length(base_col_names))))
   }
   colnames(tib)   <- base_col_names
   return(makeGRangesFromDataFrame(tib,keep.extra.columns = TRUE))
 }
-beds              <- lapply(tst_table$local_file_name,read_bed_file)
-names(beds)  <- tst_table$file_name
+beds              <- lapply(tst_table$file_source_value,read_bed_file)
+names(beds)       <- basename(tst_table$file_source_value)
 ```
 
 ##Promoters that change accessibility on T-cell activation.
