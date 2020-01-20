@@ -20,7 +20,7 @@ library(DBI)
 library(here)
 
 # setwd to OMOPomics
-here      <- here::here
+here      <- here::here #Competition for "here" from out-dated lubridate function.
 setwd(here())
 here()
 base_dir    <- here("src","R","atac_example")
@@ -38,12 +38,12 @@ melt      <- reshape2::melt
 #Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
 ##1. Submit SQL query to pull out samples based on T-cell activation.
 
-Database includes samples with activation of `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`. OMOPOmics allows for basic SQL queries which retreieve these samples along with columns of additional information for these samples.
+Database includes samples with activation of `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`. OMOPOmics allows for basic SQL queries which retreieve these sample file locations along with columns of additional treatment information.
 
 ![file.path(dirs$code,"R/atac_example/shiny_example.PNG")](OMPOmics UI concept)
 
 ##2. Load query output.
-```{r loadDataManual}
+```{r loadDataManual,echo=TRUE}
 input_file  <- file.path(base_dir,"tcell_activation_timecourse.csv")
 tst_table   <- read.table(input_file,sep=",",header = TRUE,stringsAsFactors = FALSE) %>%
                 as_tibble()
@@ -51,13 +51,13 @@ kable(tst_table) %>% kable_styling(full_width=FALSE)
 ```
 
 ##3. Load additional data.
-```{r loadPromoterData}
+```{r loadPromoterData,echo=TRUE}
 proms       <- promoters(TxDb.Hsapiens.UCSC.hg19.knownGene)
 ```
 
 ##4. Read in associated data files.
-```{r readBedFiles}
-read_bed_file     <- function(bed_file_name=tst_table$local_file_name[1]){
+```{r readBedFiles,echo=TRUE}
+read_bed_file     <- function(bed_file_name){
   base_col_names  <- c("seqnames","start","end","name","score","strand")
   tib <- as_tibble(fread(bed_file_name,sep="\t"))
   if(ncol(tib) > length(base_col_names)){
@@ -70,9 +70,10 @@ beds              <- lapply(tst_table$file_source_value,read_bed_file)
 names(beds)       <- basename(tst_table$file_source_value)
 ```
 
-##Promoters that change accessibility on T-cell activation.
+##5. Analysis.
+###Promoters that change accessibility on T-cell activation.
 ```{r prepareTest,fig.height=5,fig.width=7}
-test_overlaps   <- function(gr_quer=beds[[1]],gr_subj=proms){
+test_overlaps   <- function(gr_quer,gr_subj=proms){
   olaps <- findOverlaps(query = gr_quer,subject = gr_subj)
   out_vec <- rep(FALSE,length(gr_subj))
   out_vec[subjectHits(olaps)] <- TRUE

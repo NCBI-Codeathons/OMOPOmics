@@ -6,6 +6,7 @@ library(here)
 library(tidyverse)
 
 # setwd to OMOPomics
+here  <- here::here
 setwd(here())
 here()
 

@@ -1,8 +1,9 @@
 .DS_Store
 .Rproj.user
+.Rhistory
+.RData
 src/R/atac_example/GSE60682_details.csv
 src/R/atac_example/pca_plot_col1.png
 src/R/atac_example/pca_plot_col2.png
 src/R/atac_example/pca_plot_col3.png
 Rplots.pdf
-
