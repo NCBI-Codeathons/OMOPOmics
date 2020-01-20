@@ -1,4 +1,4 @@
-specimen_id,perturbation_id,perturbation_source_value,perturbation_type_source_value,pereturbation_start_date,perturbation_dose_value_as_number,perturbation_dose_unit
+specimen_id,perturbation_id,perturbation_source_value,perturbation_type_source_value,perturbation_start_date,perturbation_dose_value_as_number,perturbation_dose_unit
 S11,Z11,placebo,activation,4:00:00,0,ug/mL
 S21,Z21,placebo,activation,4:00:00,0,ug/mL
 S10,Z10,NA,NA,NA,NA,NA

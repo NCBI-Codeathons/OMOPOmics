@@ -27,7 +27,7 @@ my $assay_occurrence_header = "specimen_id,assay_occurrence_id,specimen_source_v
 my $assay_occurrence_data_header = "specimen_id,assay_occurrence_data_id,file_source_value\n";
 my $assay_parameters_header = "specimen_id,assay_parameters_id,reference_source_value,reference_genome_value\n";
 my $condition_occurence_header = "person_id,condition_occurence_id,condition_type_value\n";
-my $perturbation_header = "specimen_id,perturbation_id,perturbation_source_value,perturbation_type_source_value,pereturbation_start_date,perturbation_dose_value_as_number,perturbation_dose_unit\n";
+my $perturbation_header = "specimen_id,perturbation_id,perturbation_source_value,perturbation_type_source_value,perturbation_start_date,perturbation_dose_value_as_number,perturbation_dose_unit\n";
 
 
 print P_OUT "$people_header";
@@ -54,7 +54,7 @@ my($assay_occurrence_id, $assay_start_date, $assay_source_value, $assay_type_sou
 my($assay_occurrence_data_id, $file_source_value) = ("NA", "NA"); # 
 my($assay_parameters_id, $reference_source_value, $reference_genome_value) = ("NA", "NA", "NA"); # 
 my($condition_occurence_id, $condition_type_value) = ("NA", "NA"); # 
-my ($perturbation_id,$perturbation_source_value,$perturbation_type_source_value,$pereturbation_start_date,$perturbation_dose_value_as_number,$perturbation_dose_unit) = ("NA", "NA", "NA", "NA", "NA", "NA");
+my ($perturbation_id,$perturbation_source_value,$perturbation_type_source_value,$perturbation_start_date,$perturbation_dose_value_as_number,$perturbation_dose_unit) = ("NA", "NA", "NA", "NA", "NA", "NA");
 
 # initialize unique id's for tables
 my %person_id;
@@ -134,9 +134,9 @@ foreach my $line (@file) {
 	$perturbation_id = "Z$array[0]";
 	$perturbation_source_value = $array[19];
 	$perturbation_type_source_value = $array[20];
-	$pereturbation_start_date = $array[21];
+	$perturbation_start_date = $array[21];
 	$perturbation_dose_value_as_number = $array[22];
 	$perturbation_dose_unit  = $array[23];
-	print PE_OUT "$specimen_id,$perturbation_id,$perturbation_source_value,$perturbation_type_source_value,$pereturbation_start_date,$perturbation_dose_value_as_number,$perturbation_dose_unit\n";
+	print PE_OUT "$specimen_id,$perturbation_id,$perturbation_source_value,$perturbation_type_source_value,$perturbation_start_date,$perturbation_dose_value_as_number,$perturbation_dose_unit\n";
 
 }

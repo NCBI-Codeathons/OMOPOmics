@@ -46,7 +46,11 @@ Database includes samples with activation of `Human` `CD4+ T-cells` in `normal d
 ```{r loadDataManual,echo=TRUE}
 input_file  <- file.path(base_dir,"tcell_activation_timecourse.csv")
 tst_table   <- read.table(input_file,sep=",",header = TRUE,stringsAsFactors = FALSE) %>%
-                as_tibble()
+                as_tibble() %>%
+                mutate(Treatment=ifelse(perturbation_dose))
+              
+```
+```{r showDataTable}
 kable(tst_table) %>% kable_styling(full_width=FALSE)
 ```
 
@@ -67,7 +71,7 @@ read_bed_file     <- function(bed_file_name){
   return(makeGRangesFromDataFrame(tib,keep.extra.columns = TRUE))
 }
 beds              <- lapply(tst_table$file_source_value,read_bed_file)
-names(beds)       <- basename(tst_table$file_source_value)
+names(beds)       <- select(tst_table,file_source_value) %>% unlist() %>% basename()
 ```
 
 ##5. Analysis.
