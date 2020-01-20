@@ -23,7 +23,7 @@ library(here)
 here      <- here::here
 setwd(here())
 here()
-base_dir    <- file.path(here(),"src","R","atac_example")
+base_dir    <- here("src","R","atac_example")
 
 knitr::opts_chunk$set(echo = FALSE)
 dirs      <- list(base=file.path("~/OMOPOmics"))
