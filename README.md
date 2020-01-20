@@ -54,6 +54,12 @@ $ perl src/perl/output_tables.pl data/GSE60682_standard.tsv data/OMOP_tables
 
 4. Query database  and output cohort files into data/cohort
 
-`Rscript src/R/SQL_example_query.R`
-        
-5. Execute downstream analysis **Result webpage at src/R/atac_example/20JAN09-Example_analysis.html**
+```
+Rscript ./atac_example_query.R > ./tcell_timecourse.csv
+```        
+5. Execute downstream analysis 
+```
+R -e "rmarkdown::render('./20JAN20-atacseq_analysis_parameters.Rmd',params=list(input_file='./tcell_timecourse.csv'),output_format='html_document')"
+```
+
+**Result webpage at src/R/atac_example/20JAN09-Example_analysis.html**
