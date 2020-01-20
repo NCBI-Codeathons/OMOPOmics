@@ -5,15 +5,8 @@ library(RSQLite)
 library(here)
 library(tidyverse)
 
-# setwd to OMOPomics
-here  <- here::here
-setwd(here())
-here()
-
 # connects to SQL database
-con <- DBI::dbConnect(RSQLite::SQLite(), "OMOP_tables.sqlite")
-# lists tables in database
-dbListTables(con)
+con <- DBI::dbConnect(RSQLite::SQLite(), paste0(here(),"/data/OMOP_tables.sqlite"))
 
 # loads database tables into R
 assay_occurrence_data <- tbl(con,"assay_occurrence_data")
@@ -38,7 +31,10 @@ merge_1_b <- filter(merge_1_a, gender_source_value == "female") %>%
   distinct()
 
 # with associated ATAC-seq data
-merge_1_c <- inner_join(merge_1_b, assay_occurrence %>% filter(assay_source_value == "ATAC"), by="specimen_id", copy = T) %>% 
+merge_1_c <- inner_join(merge_1_b, 
+                        assay_occurrence %>% 
+                          filter(assay_source_value == "ATAC"), 
+                        by="specimen_id", copy = T) %>% 
   distinct()
 
 # collect ATAC-seq peak file paths 
@@ -91,7 +87,7 @@ merge_3_a <- person %>%
 # finding T-cell activation samples
 merge_3_b <- perturbation %>%
   filter(perturbation_type_source_value == "activation") %>% 
-  inner_join(merge_3_a, copy = T) %>% 
+  inner_join(merge_3_a, by = "specimen_id", copy = T) %>% 
   distinct()
 
 # finding T-cell activation samples
@@ -117,6 +113,6 @@ TimeCourse <- merge_3_d_coll$file_source_value
 # export list of filepaths of ATAC-seq data
 write.csv(TimeCourse, file = "data/cohorts/all_TimeCourse.csv")
 
-
+dbDisconnect(con)
 
 
