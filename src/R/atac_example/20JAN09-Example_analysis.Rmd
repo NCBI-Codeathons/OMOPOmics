@@ -206,4 +206,4 @@ ggplot(tib,aes(x=PC1,y=PC2,fill=time,color=time,pch=treatment)) +
         panel.border=element_rect(size=0.5,color="black",fill=NA),
         legend.title=element_blank())
 ggsave(file=file.path(base_dir,"pca_plot_col2.png"),height=6,width=10,unit="in",dpi=300)
-```
+``````
