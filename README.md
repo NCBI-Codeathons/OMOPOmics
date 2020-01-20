@@ -41,6 +41,7 @@ git clone https://github.com/NCBI-Codeathons/OMOPOmics.git
 cd OMOPOmics/
 pip install -r requirements.txt
 ```
+
 2. Create OMOP formatted tables from standardized experimental data format.
 
 ```
@@ -51,6 +52,8 @@ $ perl src/perl/output_tables.pl data/GSE60682_standard.tsv data/OMOP_tables
 
 `ls data/OMOP_tables/*.csv | csv-to-sqlite -o data/OMOP_tables.sqlite -D`
 
-4. Query database  `Rscript src/R/SQL_example_query.R`
+4. Query database  and output cohort files into data/cohort
+
+`Rscript src/R/SQL_example_query.R`
         
-5. Execute downstream analysis *Need command*
+5. Execute downstream analysis **Result webpage at src/R/atac_example/20JAN09-Example_analysis.html**
