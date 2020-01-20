@@ -6,6 +6,7 @@ library(lubridate)
 library(DBI)
 library(RSQLite)
 library(here)
+library(DT)
 library(tidyverse)
 
 # setwd to OMOPomics
