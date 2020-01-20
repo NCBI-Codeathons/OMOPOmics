@@ -21,13 +21,11 @@ library(DBI)
 library(here)
 
 # setwd to OMOPomics
-here      <- here::here #Competition for "here" from out-dated lubridate function.
-setwd(here())
-here()
-base_dir    <- here("src","R","atac_example")
+here      <- here::here
+base_dir  <- here("src","R","atac_example")
 
 knitr::opts_chunk$set(echo = FALSE)
-dirs      <- list(base=file.path("~/OMOPOmics"))
+dirs      <- list(base=file.path(here()))
 filter    <- dplyr::filter
 select    <- dplyr::select
 mutate    <- dplyr::mutate
@@ -47,16 +45,19 @@ read_bed_file     <- function(bed_file_name){
 }
 ```
 
-#Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
+# Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
+
 ##1. Submit SQL query to pull out samples based on T-cell activation.
 
 ![OMOPOmics UI prototype](`r file.path(base_dir,"shiny_example.PNG")`){ width=50% }
 
-```{r loadDataManual}
+##2. Load query output.
+```{r loadDataManual,echo=TRUE}
 input_file  <- file.path(base_dir,"tcell_activation_timecourse.csv")
 tst_table   <- read.table(input_file,sep=",",header = TRUE,stringsAsFactors = FALSE) %>%
                 as_tibble()
 ```
+
 ```{r showDataTable}
 tst_table   <- tst_table %>%
                 mutate(Hours = str_match(perturbation_start_date,"(^[:digit:])")[,2]) %>%
@@ -74,7 +75,7 @@ tst_table   <- tst_table %>%
 kable(tst_table) %>% kable_styling(full_width=FALSE)
 ```
 
-##3. Load additional data.
+## 3. Load additional data.
 ```{r loadPromoterData,echo=TRUE}
 proms       <- promoters(TxDb.Hsapiens.UCSC.hg19.knownGene)
 ```
@@ -156,7 +157,7 @@ repd_tib %>%
   kable() %>% kable_styling(full_width=FALSE)
 ```
 
-###C. Do any gene transcripts have a promoter whose accessibility changes over time?
+###C. Do any gene transcripts have a promoter whose accessibility changes over time followingn activation?
 ```{r exampleGenes}
 tib  <- repd_tib %>%
           select(tx_name,change) %>%
@@ -206,4 +207,4 @@ ggplot(tib,aes(x=PC1,y=PC2,fill=time,color=time,pch=treatment)) +
         panel.border=element_rect(size=0.5,color="black",fill=NA),
         legend.title=element_blank())
 ggsave(file=file.path(base_dir,"pca_plot_col2.png"),height=6,width=10,unit="in",dpi=300)
-``````
+```
