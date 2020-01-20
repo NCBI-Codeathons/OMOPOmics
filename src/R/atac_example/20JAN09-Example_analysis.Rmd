@@ -3,6 +3,7 @@ title: 'Example: T-cell activation'
 author: "Andrew Clugston"
 date: "January 9, 2020"
 output: html_document
+self_contained: no
 ---
 
 ```{r setup, include=FALSE}
@@ -33,24 +34,43 @@ mutate    <- dplyr::mutate
 arrange   <- dplyr::arrange
 rename    <- dplyr::rename
 melt      <- reshape2::melt
+
+#Functions.
+read_bed_file     <- function(bed_file_name){
+  base_col_names  <- c("seqnames","start","end","name","score","strand")
+  tib <- as_tibble(fread(file.path(here(),bed_file_name),sep="\t"))
+  if(ncol(tib) > length(base_col_names)){
+    base_col_names<- c(base_col_names,paste0("col.",seq(from=1,to=ncol(tib)-length(base_col_names))))
+  }
+  colnames(tib)   <- base_col_names
+  return(makeGRangesFromDataFrame(tib,keep.extra.columns = TRUE))
+}
 ```
 
 #Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
 ##1. Submit SQL query to pull out samples based on T-cell activation.
 
-Database includes samples with activation of `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`. OMOPOmics allows for basic SQL queries which retreieve these sample file locations along with columns of additional treatment information.
+![OMOPOmics UI prototype](`r file.path(base_dir,"shiny_example.PNG")`){ width=50% }
 
-![file.path(dirs$code,"R/atac_example/shiny_example.PNG")](OMPOmics UI concept)
-
-##2. Load query output.
-```{r loadDataManual,echo=TRUE}
+```{r loadDataManual}
 input_file  <- file.path(base_dir,"tcell_activation_timecourse.csv")
 tst_table   <- read.table(input_file,sep=",",header = TRUE,stringsAsFactors = FALSE) %>%
-                as_tibble() %>%
-                mutate(Treatment=ifelse(perturbation_dose))
-              
+                as_tibble()
 ```
 ```{r showDataTable}
+tst_table   <- tst_table %>%
+                mutate(Hours = str_match(perturbation_start_date,"(^[:digit:])")[,2]) %>%
+                rename(Treatment = perturbation_source_value,
+                       Filename = file_source_value) %>%
+                mutate(Treatment = paste0(toupper(substr(Treatment,1,1)),
+                                          substr(Treatment,2,nchar(Treatment)))) %>%
+                group_by(Treatment,Hours) %>%
+                mutate(Replicate=row_number(),
+                       SampName =paste0(Treatment,"_",Hours,"hrs_",Replicate)) %>%
+                ungroup() %>%
+                mutate(Treatment=as.factor(Treatment),
+                       Replicate=as.factor(Replicate)) %>%
+                select(SampName,Filename,Treatment,Hours,Replicate)
 kable(tst_table) %>% kable_styling(full_width=FALSE)
 ```
 
@@ -59,23 +79,14 @@ kable(tst_table) %>% kable_styling(full_width=FALSE)
 proms       <- promoters(TxDb.Hsapiens.UCSC.hg19.knownGene)
 ```
 
-##4. Read in associated data files.
+##4. Read in the returned data files.
 ```{r readBedFiles,echo=TRUE}
-read_bed_file     <- function(bed_file_name){
-  base_col_names  <- c("seqnames","start","end","name","score","strand")
-  tib <- as_tibble(fread(bed_file_name,sep="\t"))
-  if(ncol(tib) > length(base_col_names)){
-    base_col_names<- c(base_col_names,paste0("col.",seq(from=1,to=ncol(tib)-length(base_col_names))))
-  }
-  colnames(tib)   <- base_col_names
-  return(makeGRangesFromDataFrame(tib,keep.extra.columns = TRUE))
-}
-beds              <- lapply(tst_table$file_source_value,read_bed_file)
-names(beds)       <- select(tst_table,file_source_value) %>% unlist() %>% basename()
+beds              <- lapply(select(tst_table,Filename) %>% unlist(),read_bed_file)
+names(beds)       <- select(tst_table,SampName) %>% unlist() %>% basename()
 ```
 
-##5. Analysis.
-###Promoters that change accessibility on T-cell activation.
+##5. Perform analysis:
+###A. How many promoters are accessible following activation?
 ```{r prepareTest,fig.height=5,fig.width=7}
 test_overlaps   <- function(gr_quer,gr_subj=proms){
   olaps <- findOverlaps(query = gr_quer,subject = gr_subj)
@@ -92,10 +103,11 @@ repd_tib_long <- olap_tib %>%
                   melt(id.vars="tx_name",
                        value.name = "accessible",
                        variable.name = "sample") %>%
-                  mutate(time = str_match(sample,pattern="([:digit:])hrs.+$")[,2],
-                         rep = str_match(sample,pattern="Rep([:digit:]$)")[,2]) %>%
+                  mutate(time = as.integer(str_match(sample,pattern=".+_([:digit:])hrs")[,2]),
+                         rep = str_match(sample,pattern="([:digit:]$)")[,2],
+                         treatment=factor(str_match(sample,pattern="(^[^_]+)_")[,2],levels=c("Placebo","Ionomycin"))) %>%
                   as_tibble() %>%
-                  group_by(tx_name,time) %>%
+                  group_by(tx_name,time,treatment) %>%
                   summarize(accessible=all(accessible)) %>%
                   ungroup()
 repd_tib  <- repd_tib_long %>% 
@@ -105,17 +117,23 @@ repd_tib  <- repd_tib_long %>%
                                         TRUE ~ "Uncertain")) %>%
               filter(change != "Uncertain")
 ```
-```{r plotPeakNumbers}
+
+```{r plotPeakNumbers,fig.width=8,fig.height=4}
 tib <- repd_tib_long  %>%
-         group_by(tx_name,time) %>%
+         group_by(tx_name,time,treatment) %>%
          summarize(accessible=all(accessible)) %>%
-         ungroup() %>% group_by(accessible,time) %>%
+         ungroup() %>% group_by(accessible,time,treatment) %>%
          tally() %>%
-         filter(accessible)
+         filter(accessible) %>% ungroup()
   
-ggplot(tib,aes(x=as.factor(time),y=n,fill=as.factor(time))) +
-       geom_bar(stat="identity",color="black") +
-       scale_y_continuous(name="Accessible promotersr",expand=expand_scale(mult=c(0,0.1)),label=comma) +
+ggplot(tib,aes(x=as.factor(time),group=treatment,y=n,fill=treatment)) +
+       geom_bar(data=filter(tib,treatment=="Ionomycin"),
+                stat="identity",color="black") +
+       geom_bar(data=filter(tib,treatment=="Placebo"),
+                stat="identity",color="black",position=position_nudge(x = 0.3),width = 0.5) +
+       geom_hline(yintercept = filter(tib,treatment=="Placebo") %>% select(n) %>% unlist(),
+                  size=0.5,color="black",linetype="dotted") +
+       scale_y_continuous(name="Accessible promoters",expand=expand_scale(mult=c(0,0.1)),label=comma) +
        scale_x_discrete(name="Hours post-activation") +
        ggtitle("Accessible T-cell promoters following T-cell activation",
                subtitle="Replicated promoters only.") +
@@ -123,20 +141,22 @@ ggplot(tib,aes(x=as.factor(time),y=n,fill=as.factor(time))) +
              panel.border = element_rect(size=0.5,color="black",fill=NA),
              panel.grid = element_blank(),
              panel.grid.major.y = element_line(size=0.5,color="lightgray"),
-             legend.position="none",
              plot.subtitle = element_text(hjust=0,face="italic"),
              axis.text = element_text(size=15),
-             axis.title=element_text(size=20))
+             axis.title=element_text(size=20),
+             legend.title=element_blank())
 ggsave(filename = file.path(base_dir,"peak_count_plot.png"),device = "png",width = 6,height = 4,units = "in",dpi=300)
 ```
+
+###B. How do promoters change over time?
 ```{r tallyChanges}
 repd_tib %>%
   group_by(change) %>%
   tally() %>%
-  kable()
+  kable() %>% kable_styling(full_width=FALSE)
 ```
 
-##Transcripts with changing promoters.
+###C. Do any gene transcripts have a promoter whose accessibility changes over time?
 ```{r exampleGenes}
 tib  <- repd_tib %>%
           select(tx_name,change) %>%
@@ -150,8 +170,7 @@ cbind(rbind(head(tib[[1]]),c("   ...","  ...")),
   kable() %>% kable_styling(full_width=FALSE)
 ```
 
-
-##PCA of all peaks.
+###D. How does the accessiblity profile of each sample compare?
 ```{r atacPCA}
 get_overlapped_vals <- function(gr_quer=beds[[1]],
                                 gr_subj=uni_peaks,
@@ -175,13 +194,16 @@ tib     <- pcs$rotation[,c("PC1","PC2")] %>%
               as.data.frame() %>%
               rownames_to_column("sample") %>%
               as_tibble() %>%
-              mutate(time=str_match(sample,"TCA([:digit:])")[,2])
+              mutate(treatment=str_match(sample,"(^[^_]+)")[,2],
+                     time=as.factor(str_match(sample,"_([:digit:]hrs)")[,2]))
 
-ggplot(tib,aes(x=PC1,y=PC2,fill=time)) +
-  geom_point(size=8,pch=21,color='black') +
+ggplot(tib,aes(x=PC1,y=PC2,fill=time,color=time,pch=treatment)) +
+  #scale_fill_manual(values=c("cyan1","cyan3","cyan4","darkolivegreen")) +
+  geom_point(size=8,show.legend = TRUE) +
+  scale_shape_manual(values = c(Ionomycin=21,Placebo=24)) +
   theme(panel.background=element_blank(),
         panel.grid=element_line(size=0.5,color="lightgray"),
-        panel.border=element_rect(size=0.5,color="black",fill=NA))
+        panel.border=element_rect(size=0.5,color="black",fill=NA),
+        legend.title=element_blank())
 ggsave(file=file.path(base_dir,"pca_plot_col2.png"),height=6,width=10,unit="in",dpi=300)
-
 ```
