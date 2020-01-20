@@ -78,4 +78,5 @@ shinyServer(function(input, output) {
                   col.names = ifelse(input$output_header=="Yes",TRUE,FALSE))
     }
   )
+  output$sql_preview        <- renderPrint(show_query(prebuilt_query()))
 })

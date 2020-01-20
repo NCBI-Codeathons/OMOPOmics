@@ -8,7 +8,14 @@ shinyUI(fluidPage(
         column(3,selectInput(inputId= "output_sep_sel",label="Filetype",choices = c(CSV=",",TSV="\t"))),
         column(3,selectInput(inputId= "output_header" ,label="Header",choices=c("Yes","No")))
       ),
-      downloadButton(outputId = "output_download_btn",label = "Save")
+      fluidRow(
+        column(4,downloadButton(outputId = "output_download_btn",label = "Save"))
+      ),
+      br(),
+      prettyToggle(inputId = "show_query",label_on = "Hide Dbplyr query preview",label_off = "Show Dbplyr query preview",value = FALSE),
+      conditionalPanel(condition = "input.show_query==true",
+        verbatimTextOutput(outputId = "sql_preview")
+      )
     ),
     mainPanel(
       dataTableOutput(outputId = "table_output")

@@ -17,41 +17,41 @@ library(data.table)
 library(dbplyr)
 library(RSQLite)
 library(DBI)
+library(here)
+
+# setwd to OMOPomics
+setwd(here())
+here()
+base_dir    <- file.path(here(),"src","R","atac_example")
 
 knitr::opts_chunk$set(echo = FALSE)
 dirs      <- list(base=file.path("~/OMOPOmics"))
-dirs$data <- file.path(dirs$base,"data")
-dirs$code <- file.path(dirs$base,"src")
-base_dir<- file.path(dirs$code,"R/atac_example")
-filter  <- dplyr::filter
-select  <- dplyr::select
-mutate  <- dplyr::mutate
-arrange <- dplyr::arrange
-rename  <- dplyr::rename
-melt    <- reshape2::melt
+filter    <- dplyr::filter
+select    <- dplyr::select
+mutate    <- dplyr::mutate
+arrange   <- dplyr::arrange
+rename    <- dplyr::rename
+melt      <- reshape2::melt
 ```
 
 #Example analysis: **Are there any genes who's promoters become accessible or inaccessible following T-cell activation?**
 
+##1. Submit SQL query to pull out samples based on T-cell activation.
+
+Database includese samples with activation of `Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`. Using 
 Question would be best answered with differential enrichment analyses, but we can use BED files of accessible regions to provide a simple binary answer (promoter is open/closed) for each time point measured. We specify a query for:
 
-`Human` `CD4+ T-cells` in `normal donors` at `0,2,4,` and `6 hours post activation`
-
-`This section should be replaced with the R-version of the query function, whatever we end up with.`
-```{r loadDataSQL,eval=FALSE}
- file.path(dirs$data,"cohorts/cohort1.txt") %>%
-                read.table(sep="\t",header=TRUE,stringsAsFactors = FALSE) %>%
-  as_tibble() %>%
-  mutate()
-```
 
 
+![file.path(dirs$code,"R/atac_example/shiny_example.PNG")](OMPOmics UI concept)
+
+##1
 ```{r loadDataManual}
-file_table  <- file.path(base_dir,"GSE60682_details.tsv") %>%
-                read.table(sep="\t",header = TRUE,stringsAsFactors = FALSE) %>%
-                as_tibble() %>%
-                filter(treatment=="T cell activation")
-tst_table   <- file_table %>% select(file_name,sample_name,cell.type,treatment,time.point,local_file_name)
+input_file  <- file.path(base_dir,"tcell_activation_timecourse.csv")
+tst_table   <- read.table(input_file,sep=",",header = TRUE,stringsAsFactors = FALSE) %>%
+                as_tibble()
+kable(tst_table) %>% kable_styling(full_width=FALSE)
+#tst_table   <- file_table %>% select(file_name,sample_name,cell.type,treatment,time.point,local_file_name)
 #kable(tst_file)
 
 #Get promoters.
