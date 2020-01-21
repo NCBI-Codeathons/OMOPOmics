@@ -2,7 +2,7 @@
 
 ## TLDR
 
-OMOPOmics facilitates standardizing experimental datasets for reproducible research.
+OMOPOmics facilitates standardizing clinical diagnostic and experimental datasets.
 
 ## Motivation 
 
