@@ -55,11 +55,31 @@ $ perl src/perl/output_tables.pl data/GSE60682_standard.tsv data/OMOP_tables
 4. Query database  and output cohort files into data/cohort
 
 ```
-Rscript ./atac_example_query.R > ./tcell_timecourse.csv
+cd src/R/atac_example/
+Rscript ./atac_example_query.R > ./tcell_activation_timecourse.csv
 ```        
 5. Execute downstream analysis 
+
 ```
 R -e "rmarkdown::render('./20JAN20-atacseq_analysis_parameters.Rmd',params=list(input_file='./tcell_timecourse.csv'),output_format='html_document')"
 ```
 
 **Result webpage at src/R/atac_example/20JAN09-Example_analysis.html**
+
+## FAQ
+
+**Who would use this?**
+
+- Clinicians, researchers looking to supplement their own data or make their data available to others.
+
+**Why would they use it?**
+
+- Ease of use; SQL database queries are standard format, easily incorporated into a user interface. Given the expandable nature of the platform, changes and updates to the technologies should be easily supported.
+
+**What can OMOPOmics grow into?**
+
+- A standard framework for sequencing data sets at organizations.
+
+**What is the ultimate goal of OMOPomics?**
+
+- OMOPOmics has the potential to nucleate a standardized 'Omics format, one which could pave the way for any number of analyses to come in the future. These include not only upcoming research and new sequencing technologies, but also clinicians looking to incorporate these data from across research and healthcare networks as they apply these technologies to patient care.
