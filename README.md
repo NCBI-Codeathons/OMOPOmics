@@ -2,7 +2,7 @@
 
 ## TLDR
 
-OMOPOmics facilitates standardizing experimental datasets for reproducible research.
+OMOPOmics facilitates standardizing clinical diagnostic and experimental datasets.
 
 ## Motivation 
 
@@ -50,7 +50,9 @@ $ perl src/perl/output_tables.pl data/GSE60682_standard.tsv data/OMOP_tables
 
 3. Create SQL database from OMOP formatted tables: 
 
-`ls data/OMOP_tables/*.csv | csv-to-sqlite -o data/OMOP_tables.sqlite -D`
+```
+ls data/OMOP_tables/*.csv | csv-to-sqlite -o data/OMOP_tables.sqlite -D
+```
 
 4. Query database  and output cohort files into data/cohort
 
