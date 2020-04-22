@@ -1,0 +1,36 @@
+﻿table_name,omop_name,std_name,class,example,
+specimen,specimen_id,,character,S1,
+specimen,specimen_source_value,sample_name,character,GSM1484783,Provided
+specimen,specimen_type_source_value,cell_type,character,CD4+ T-cells,Provided
+specimen,person_id,,character,100001,
+person,person_id,patient,character,100001,Provided
+person,gender_concept_id,,character,8507,
+person,person_source_value,patient_name,character,Donor1,Provided
+person,gender_source_value,sex,character,Male,Provided
+provider,provider_id,,character,P100001,
+provider,provider_source_value,source,character,GEO,Provided
+provider,provider_type_source_value,source_id,character,GSE60682,Provided
+provider,person_id,,character,100001,
+assay_parameters,specimen_id,,character,S1,
+assay_parameters,assay_parameters_id,,character,AP1,
+assay_parameters,reference_source_value,organism,character,Homo sapiens,Provided
+assay_parameters,reference_genome_value,reference_genome,character,hg19,Provided
+assay_occurrence,assay_occurrence_id,,character,A1,
+assay_occurrence,specimen_source_value,,character,GSE60682,
+assay_occurrence,assay_start_date,time_point,numeric,4:00:00,Provided
+assay_occurrence,assay_source_value,assay,character,ATACseq,Provided
+assay_occurrence,assay_type_source_value,assay_type,character,BAM,Provided
+assay_occurrence,specimen_id,,character,S1,
+assay_occurrence_data,assay_occurrence_data_id,,character,AD1,
+assay_occurrence_data,file_source_value,local_file_name,character,/file/location.bam,Provided
+assay_occurrence_data,specimen_id,,character,S1,
+condition_occurrence,person_id,,character,100005,
+condition_occurrence,condition_occurrence_id,,character,C100005,
+condition_occurrence,condition_type_value,disease,character,cutaneous T-cell leukemia (CTCL),Provided
+perturbation,specimen_id,,character,S1,
+perturbation,perturbation_id,,character,Z1,
+perturbation,perturbation_source_value,perturbation_source_value,character,ionomycin,Provided
+perturbation,perturbation_type_source_value,perturbation_type_source_value,character,activation,Provided
+perturbation,perturbation_start_date,perturbation_start_date,numeric,2:00:00,Provided
+perturbation,perturbation_dose_value_as_number,perturbation_dose_value_as_number,numeric,1,Provided
+perturbation,perturbation_dose_unit,perturbation_dose_unit,character,ug/mL,Provided

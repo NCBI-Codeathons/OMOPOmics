@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyWidgets)
+library(ROMOPOmics)
 library(dplyr)
 library(dbplyr)
 library(lubridate)
@@ -7,14 +8,10 @@ library(DBI)
 library(RSQLite)
 library(DT)
 library(tidyverse)
-#library(here)
+library(here)
 
-# setwd to OMOPomics
-#here        <- here::here
-here  <- "/projects/andrew/OMOPOmics/"
-#setwd(here())
-base_dir    <- file.path(here,"src","R","shiny","OMOPOmics")
-data_dir    <- file.path(here,"data")
+base_dir    <- file.path(here(),"src","R","shiny","OMOPOmics")
+data_dir    <- file.path(here(),"data")
 tabs_dir    <- file.path(data_dir,"OMOP_tables")
 
 #Source.
@@ -23,8 +20,9 @@ select  <- dplyr::select
 mutate  <- dplyr::mutate
 arrange <- dplyr::arrange
 
-# connects to SQL database
-db_filename <- "OMOP_tables_new.sqlite"
+# Build and/or connect to SQLite database.
+db_filename <- "OMOP_tables"
+con         <- dbOMOP(input_files = file.path(data_dir,"GSE60682_standard.tsv"))
 con         <- DBI::dbConnect(RSQLite::SQLite(), "OMOP_tables_new.sqlite")
 if(file.size(db_filename)==0){
   #For use with updated 'GSE60682_details.tsv'. If db file is empty, create a
