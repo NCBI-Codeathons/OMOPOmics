@@ -4,7 +4,7 @@
 \alias{readStandardTables}
 \title{readStandardTables.R}
 \usage{
-readStandardTables(standard_table_files)
+readStandardTables(input_files)
 }
 \arguments{
 \item{standard_table_files}{List of CSV files to incorporate.}

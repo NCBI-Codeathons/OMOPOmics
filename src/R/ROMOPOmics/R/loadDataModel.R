@@ -1,8 +1,13 @@
 #' loadDataModel
 #'
-#' Function reads in "official" data model and returns as tibble (and list of tables).
+#' Function reads in "official" data model and returns as tibble (and list of
+#' tables). By default, points to "cutom" version of the OMOP data model which
+#' includes the "Sequencing" table and the hla_type field in "Person".
 #'
-#' loadDataModel
+#' @param master_table_file File containing the total data model used, including "field", "required", "type", "description" and "table" fields.
+#' @param as_table_list If TRUE, return the data model split into a list of tables rather than as one solid table.
+#'
+#' loadDataModel()
 #'
 #' @import tibble
 #' @import data.table
@@ -13,7 +18,7 @@
 loadDataModel <- function(master_table_file,
                           as_table_list = FALSE){
   if(missing(master_table_file)){
-    master_table_file <- system.file("extdata","OMOP_CDM_v6_0.csv",package="ROMOPOmics",mustWork = TRUE)
+    master_table_file <- system.file("extdata","OMOP_CDM_v6_0_custom.csv",package="ROMOPOmics",mustWork = TRUE)
   }
   #When reading the master table, ignore any field that is:
   # 1. A table ID.

@@ -4,13 +4,17 @@
 \alias{loadModelMasks}
 \title{loadModelMasks}
 \usage{
-loadModelMasks(mask_file_directory, data_model = loadDataModel())
+loadModelMasks(
+  mask_file_directory,
+  data_model = loadDataModel(),
+  as_blank = FALSE
+)
 }
 \description{
-Function reads in a "mask" table which includes three essential columns:
-table, alias, and field. 'Alias' denotes the value being input, 'field'
-denotes the data model's equivalent field name, and 'Table' denotes the
-data model table where that field resides.
+Function reads in all "mask" tables within a directory which include three
+essential columns: table, alias, and field. 'Alias' denotes the value being
+input, 'field' denotes the data model's equivalent field name, and 'table'
+denotes the data model table where that field resides.
 }
 \details{
 loadModelMasks

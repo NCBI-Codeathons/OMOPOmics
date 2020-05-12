@@ -1,6 +1,7 @@
 table	alias	field	description	example
-PERSON	patient_name;cell_line	person_source_value	Identifier from source dataset.	Steven Stevenson
+PERSON	patient_name	person_source_value	Patient name OR cell line/sample name.	Steven Stevenson
 PERSON	sex	gender_source_value	Gender id value as text.	Male
+PERSON	hla_type	hla_source_value	HLA type as string.	HLA-A*02:101:01:02N
 SPECIMEN	collection_datetime	specimen_datetime	Date and time of collection.	6/19/1986 4:30pm
 SPECIMEN	sample_anatomy	anatomic_site_source_value	Anatomical location of collection as text from source.	appendix
 SPECIMEN	disease_status	disease_status_source_value	Disease as text from source.	appendicitis
@@ -12,9 +13,14 @@ SEQUENCING	sequencing_cycles	library_cycles	Cycles per end; approximate number o
 SEQUENCING	sequencing_platform	instrument_source_value	Sequencing platform used (text).	Illumina NovaSeq 192
 SEQUENCING	reference_genome	reference_genome_value	"Reference genome used, if aligned (text)."	hg38
 SEQUENCING	sequencing_metric	metric_source_value	Units of sequencing data (text); i.e. what was sequenced.	smRNA transcripts
+SEQUENCING	sequencing_pct_alignment	sequencing_pct_alignment	"Percent alignment, if available."	98
+SEQUENCING	sequencing_min_quality	sequencing_min_quality	"Minimum quality score, if available."	20
+SEQUENCING	sequencing_quality_metric	sequencing_quality_metric	"Quality score unit, if available."	Phred
 SEQUENCING	sequencing_file_type	file_type_source_value	File type (text).	BAM
+SEQUENCING	sequencing_file_description	sequencing_file_description	"File description (counts, normalization method, differential analysis, etc.)."	"Aligned reads, quality trimmed."
 SEQUENCING	sequencing_file_location	file_local_source	Local file location.	C:/seq_data/seq1-1.bam
-SEQUENCING	sequencing_repository	file_remote_source_value	Remote file repository.	GEO
+SEQUENCING	sequencing_repository	file_remote_repo_value	Remote file repository.	GEO
+SEQUENCING	sequencing_repo_id	file_remote_repo_id	Remote file repository ID.	999999
 SEQUENCING	sequencing_URL	file_remote_source_url	Remote file URL.	ftps:/remote_file/location/samp1.bam
 CONDITION_OCCURRENCE	sample_condition	condition_type_value	Patient condition/cell line modeled.	Appendicitis.
 COHORT_DEFINITION	cohort_name	cohort_definition_name	Short description of cohort.	Appendicitis smallRNA-seq

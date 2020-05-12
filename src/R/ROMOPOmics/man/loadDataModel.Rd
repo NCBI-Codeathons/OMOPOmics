@@ -6,9 +6,15 @@
 \usage{
 loadDataModel(master_table_file, as_table_list = FALSE)
 }
-\description{
-Function reads in "official" data model and returns as tibble (and list of tables).
+\arguments{
+\item{master_table_file}{File containing the total data model used, including "field", "required", "type", "description" and "table" fields.}
+
+\item{as_table_list}{If TRUE, return the data model split into a list of tables rather than as one solid table.
+
+loadDataModel()}
 }
-\details{
-loadDataModel
+\description{
+Function reads in "official" data model and returns as tibble (and list of
+tables). By default, points to "cutom" version of the OMOP data model which
+includes the "Sequencing" table and the hla_type field in "Person".
 }

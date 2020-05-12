@@ -5,7 +5,7 @@
 #' which makes this a poor choice for scaling upwards. If available, use
 #' buildSQLDB() instead.
 #'
-#' @param omop_csvs Filesnames of all OMOP csv files to be incorporated into the database.
+#' @param omop_tables Filesnames of all OMOP csv files to be incorporated into the database.
 #' @param sql_db_file Filename under which to store the SQLite database file.
 #'
 #' @import tidyverse

@@ -5,12 +5,12 @@
 \title{buildSQLDBR.R}
 \usage{
 buildSQLDBR(
-  omop_csvs,
+  omop_tables,
   sql_db_file = file.path(dirs$data, "OMOP_tables.sqlite")
 )
 }
 \arguments{
-\item{omop_csvs}{Filesnames of all OMOP csv files to be incorporated into the database.}
+\item{omop_tables}{Filesnames of all OMOP csv files to be incorporated into the database.}
 
 \item{sql_db_file}{Filename under which to store the SQLite database file.}
 }
