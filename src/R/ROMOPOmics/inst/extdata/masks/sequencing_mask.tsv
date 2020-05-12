@@ -1,0 +1,28 @@
+table	alias	field	description	example
+PERSON	patient_name;cell_line	person_source_value	Identifier from source dataset.	Steven Stevenson
+PERSON	sex	gender_source_value	Gender id value as text.	Male
+SPECIMEN	collection_datetime	specimen_datetime	Date and time of collection.	6/19/1986 4:30pm
+SPECIMEN	sample_anatomy	anatomic_site_source_value	Anatomical location of collection as text from source.	appendix
+SPECIMEN	disease_status	disease_status_source_value	Disease as text from source.	appendicitis
+SPECIMEN	data_source	specimen_source_value	Value from the source dataset (mapped to Standard Concept in Standardized Vocab)	GEO1131223
+SEQUENCING	sequencing_library_type	library_concept_value	Sequencing library type (text).	smRNA
+SEQUENCING	sequencing_library_kit	library_source_value	Sequencing library source kit (text)	miRNEasy miRNA kit
+SEQUENCING	paired_end	library_paired_end	Boolean; library is paired end.	0
+SEQUENCING	sequencing_cycles	library_cycles	Cycles per end; approximate number of base pairs sequenced per end of read.	75
+SEQUENCING	sequencing_platform	instrument_source_value	Sequencing platform used (text).	Illumina NovaSeq 192
+SEQUENCING	reference_genome	reference_genome_value	"Reference genome used, if aligned (text)."	hg38
+SEQUENCING	sequencing_metric	metric_source_value	Units of sequencing data (text); i.e. what was sequenced.	smRNA transcripts
+SEQUENCING	sequencing_file_type	file_type_source_value	File type (text).	BAM
+SEQUENCING	sequencing_file_location	file_local_source	Local file location.	C:/seq_data/seq1-1.bam
+SEQUENCING	sequencing_repository	file_remote_source_value	Remote file repository.	GEO
+SEQUENCING	sequencing_URL	file_remote_source_url	Remote file URL.	ftps:/remote_file/location/samp1.bam
+CONDITION_OCCURRENCE	sample_condition	condition_type_value	Patient condition/cell line modeled.	Appendicitis.
+COHORT_DEFINITION	cohort_name	cohort_definition_name	Short description of cohort.	Appendicitis smallRNA-seq
+COHORT_DEFINITION	cohort_description	cohort_definition_description	Long description of cohort.	Patients with appendicitis had smRNA-seq libraries prepared from homogenized appendix biopsies.
+COHORT_DEFINITION	cohort_definition_date	cohort_initiation_date	"Date when the cohort was defined (as opposed to cohort time period, i.e. start and end datetimes)."	4/15/2019
+DRUG_EXPOSURE	treatment_start_datetime	drug_exposure_start_datetime	Treatment started.	4/15/2019 3:30pm
+DRUG_EXPOSURE	treatment_end_datetime	drug_exposure_end_datetime	Treatment ended.	4/19/2019 1:30pm
+DRUG_EXPOSURE	drug_treatment	drug_source_value	Drug treatment used.	Hydroxycut
+DRUG_EXPOSURE	drug_treatment_method	route_source_value	Means of drug treatment.	IV drip.
+DRUG_EXPOSURE	drug_dose	quantity	Quantity of drug administered.	1.2
+DRUG_EXPOSURE	drug_dose_unit	dose_unit_source_value	Units describing treatment.	mg/kg

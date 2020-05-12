@@ -14,7 +14,7 @@
 #'
 #' @export
 
-readStandardTables<- function(standard_table_files){
+readStandardTables<- function(input_files){
   st_fls        <- standard_table_files
   names(st_fls) <- gsub("\\.tsv","",basename(st_fls))
   lapply(names(st_fls), function(x)

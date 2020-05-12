@@ -25,7 +25,7 @@ inputTable  <- function(master_table_file){
                 filter(!field %in% table_indices & !grepl("_id$",field) & alias != "") %>%
                 mutate(value = "")
   mtx       <- matrix(ncol=nrow(mst_tbl),data = "")
-  colnames(mtx)   <- select(mst_tbl,field) %>% unlist(use.names=FALSE)
+  colnames(mtx)   <- select(mst_tbl,alias) %>% unlist(use.names=FALSE)
   return(as_tibble(mtx))
   #template_file     <- system.file("extdata","standard_table_template.tsv",package="ROMOPOmics",mustWork = TRUE)
   #return(as_tibble(data.table::fread(template_file)))

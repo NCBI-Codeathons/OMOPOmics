@@ -1,0 +1,60 @@
+table	field	type	alias	description	example
+PERSON	person_id	integer		Table ID.	999999
+PERSON	gender_concept_id	integer		Gender id value.	999999
+PERSON	person_source_value	varchar(50)	name	Identifier from source dataset.	Steven Stevenson
+PERSON	gender_source_value	varchar(50)	sex	Gender id value as text.	Male
+PERSON	hla_type	varchar(50)		HLA type. (Nonstandard)	HLA-A*02:101:01:02N
+SPECIMEN	specimen_id	integer		Table ID.	999999
+SPECIMEN	person_id	integer		Table ID.	999999
+SPECIMEN	observation_id	integer		Table ID.	999999
+SPECIMEN	specimen_date	date		Date of collection.	6/19/1986
+SPECIMEN	specimen_datetime	datetime	sampling_datetime	Date and time of collection.	6/19/1986 4:30pm
+SPECIMEN	quantity	float		Amount of specimen collected.	1.04
+SPECIMEN	unit_concept_id	integer		Unit of quantity (maps from standard concept -> unit identifier).	999999
+SPECIMEN	unit_source_value	varchar(50)		Unit detail from source (not mapped).	mL
+SPECIMEN	anatomic_site_concept_id	integer		Anatomical location of collection (mapped to Standard Concept)	999999
+SPECIMEN	anatomic_site_source_value	varchar(50)	sample_anatomy	Anatomical location of collection as text from source.	appendix
+SPECIMEN	disease_status_concept_id	integer		Disease (mapped to Standard Concept).	999999
+SPECIMEN	disease_status_source_value	varchar(50)	sample_disease	Disease as text from source.	appendicitis
+SPECIMEN	specimen_source_id	varchar(50)	sample_repository	Identifier from source dataset.	GEO
+SPECIMEN	specimen_source_value	varchar(50)	sample_repository_id	Value from the source dataset (mapped to Standard Concept in Standardized Vocab)	GEO1131223
+OBSERVATION	observation_id	integer		Table ID.	999999
+OBSERVATION	person_id	integer		Table ID.	999999
+OBSERVATION	sequencing_id	integer		Table ID.	999999
+OBSERVATION	observation_concept_id	integer		Observation type (mapped).	999999
+OBSERVATION	observation_concept_value	varchar(50)	sequencing_type	Observation type (text).	smRNA
+OBSERVATION	observation_date	date		Date of observation.	4/30/2019
+OBSERVATION	observation_datetime	datetime	sequencing_datetime	Date and time of observation.	4/30/2019 5:50pm
+SEQUENCING	sequencing_id	integer		Table ID.	999999
+SEQUENCING	library_concept_id	integer		Sequencing library type (mapped).	999999
+SEQUENCING	library_concept_value	varchar(50)	sequencing_library_type	Sequencing library type (text).	smRNA
+SEQUENCING	library_source_id	integer		Sequencing library source kit (mapped)	999999
+SEQUENCING	library_source_value	varchar(50)	sequencing_library_kit	Sequencing library source kit (text)	miRNEasy miRNA kit
+SEQUENCING	library_paired_end	integer	paired_end	Boolean; library is paired end.	0
+SEQUENCING	library_cycles	integer	sequencing_cycles	Cycles per end; approximate number of base pairs sequenced per end of read.	75
+SEQUENCING	instrument_source_id	integer		Sequencing platform used (mapped).	999999
+SEQUENCING	instrument_source_value	varchar(50)	sequencing_platform	Sequencing platform used (text).	Illumina NovaSeq 192
+SEQUENCING	reference_genome_id	integer		"Reference genome used, if aligned (mapped)."	999999
+SEQUENCING	reference_genome_value	varchar(50)	reference_genome	"Reference genome used, if aligned (text)."	hg38
+SEQUENCING	metric_concept_id	integer		Units of sequencing data (mapped).	999999
+SEQUENCING	metric_source_value	varchar(50)	sequencing_metric	Units of sequencing data (text).	smRNA transcripts
+SEQUENCING	file_type_id	integer		File type (mapped).	999999
+SEQUENCING	file_type_source_value	varchar(50)	sequencing_file_type	File type (text).	BAM
+SEQUENCING	file_local_source	varchar(255)	sequencing_file_location	Local file location.	C:/seq_data/seq1-1.bam
+SEQUENCING	file_remote_source_id	integer		Remote file repository (mapped).	999999
+SEQUENCING	file_remote_source_value	varchar(255)	sequencing_repository	Remote file repository.	GEO
+SEQUENCING	file_remote_source_url	varchar(255)	sequencing_URL	Remote file URL.	ftps:/remote_file/location/samp1.bam
+CONDITION_OCCURRENCE	condition_occurrence_id	integer		Table ID.	999999
+CONDITION_OCCURRENCE	person_id	integer		Table ID.	999999
+CONDITION_OCCURRENCE	condition_concept_id	integer		Condition (mapped).	999999
+CONDITION_OCCURRENCE	condition_type_value	varchar(50)	sample_condition	Condition (text).	Appendicitis.
+COHORT	cohort_id	integer		Table ID.	999999
+COHORT	cohort_definition_id	integer		Table ID.	999999
+COHORT	subject_id	integer		"Can indicate PERSON, PROVIDER, or VISIT_OCCURRENCE table IDs."	999999
+COHORT	cohort_start_date	date	cohort_start_date	Date cohort was initiated	4/29/2020
+COHORT	cohort_end_date	date	cohort_end_date	Date cohort was initiated	4/29/2020
+COHORT_DEFINITION	cohort_definition_id	integer		Table ID.	999999
+COHORT_DEFINITION	cohort_definition_name	varchar(255)	cohort_name	Short description of cohort.	Appendicitis smallRNA-seq
+COHORT_DEFINITION	cohort_definition_description	varchar(MAX)	cohort_description	Long description of cohort.	Patients with appendicitis had smRNA-seq libraries prepared from homogenized appendix biopsies.
+COHORT_DEFINITION	subject_concept_id	integer		"Can indicate PERSON, PROVIDER, or VISIT_OCCURRENCE table IDs."	999999
+COHORT_DEFINITION	cohort_initiation_date	date	cohort_definition_date	"Date when the cohort was defined (as opposed to cohort time period, i.e. start and end datetimes)."	4/15/2019
