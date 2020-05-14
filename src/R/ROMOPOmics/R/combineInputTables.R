@@ -28,10 +28,10 @@ combineInputTables  <- function(input_table_list=lapply(seq_input_files,readInpu
                 mutate(table_field = paste(table,field,sep="|"))
   #Figure out used OMOP tables (those with any input fields).
   used_tbs  <- full_tb %>%
-    select(-field,-required,-type,-description,-table_index,-table_field) %>%
-    mutate(is_used=rowSums(!is.na(select(.,-table)))>0) %>%
-    filter(is_used) %>%
-    select(table) %>% unlist(use.names=FALSE) %>% unique()
+                select(-field,-required,-type,-description,-table_index,-table_field) %>%
+                mutate(is_used=rowSums(!is.na(select(.,-table)))>0) %>%
+                filter(is_used) %>%
+                select(table) %>% unlist(use.names=FALSE) %>% unique()
   full_tb   <- filter(full_tb,table %in% used_tbs)
 
   #Col_data contains all meta data for each field.
@@ -39,7 +39,9 @@ combineInputTables  <- function(input_table_list=lapply(seq_input_files,readInpu
 
   #tb is a minimal tibble with a table|field column that indexes back to the full table.
   tb        <- filter(full_tb,!table_index) %>%
-    select(table_field,everything(),-field,-table,-required,-type,-description,-table_index)
+                select(table_field,
+                       everything(),
+                       -field,-table,-required,-type,-description,-table_index)
   cn        <- tb$table_field
   tb        <- tb %>%
                 select(-table_field) %>%

@@ -10,9 +10,14 @@ library(tidyverse)
 library(data.table)
 library(knitr)
 library(kableExtra)
+library(here)
+library(RSQLite)
 
 dirs      <- list()
-dirs$base <- file.path('/data/projects/andrew/ROMOPOmics_imp')
+#Something wierd about how here() works within and without a markdown; check for interactivity.
+dirs$base <- ifelse(interactive(),
+                    file.path(here(),"src/R/ROMOPOmics/demo"),
+                    file.path(here(),"demo"))
 dirs$data <- file.path(dirs$base,"data")
 dirs$masks<- file.path(dirs$base,"masks")
 dirs$seq_data <- file.path(dirs$base,"sequencing")
@@ -32,18 +37,18 @@ library(ROMOPOmics)
 ```
 
 #Step 2: Load the OMOP data model, in this case [OMOP 6.0](https://github.com/OHDSI/CommonDataModel/blob/master/OMOP_CDM_v6_0.csv).
-```{r loadDataModel,echo=TRUE}
-#dm_lst<- loadDataModel(master_table_file = file.path(dirs$base,"OMOP_CDM_v6_0_custom.csv"),as_table_list = TRUE) #Load custom model
-dm_lst<- loadDataModel(as_table_list = TRUE)
-```
 
-```{r loadExampleModels,echo=FALSE}
-dm      <- loadDataModel(master_table_file = file.path(dirs$base,"OMOP_CDM_v6_0_custom.csv"))
-dm_old  <- loadDataModel() #Load old model first.
+> `loadDataModel()` can return the data model as a single table or as a list of OMOP tables.
+
+```{r loadDataModel,echo=TRUE}
+new_dm_file   <- file.path(dirs$base,"OMOP_CDM_v6_0_custom.csv")
+old_dm_file   <- file.path(dirs$base,"OMOP_CDM_v6_0.csv")
+dm      <- loadDataModel(as_table_list = FALSE,master_table_file = new_dm_file)
+dm_lst  <- loadDataModel(as_table_list = TRUE,master_table_file = new_dm_file)
+dm_old  <- loadDataModel(as_table_list = FALSE,master_table_file = old_dm_file)
 ```
 
 Default OMOP values were downloaded from the [OMOP 6.0 GitHub](https://github.com/OHDSI/CommonDataModel/blob/master/OMOP_CDM_v6_0.csv). This data model includes `r length(unique(dm_old$field))` unique fields accross `r length(unique(dm_old$table))` tables:
-
 ```{r previewOMOP,echo=FALSE}
 dm_old %>%
   filter(row_number() <= 8) %>% 
@@ -65,11 +70,11 @@ dm_lst$SEQUENCING %>%
   kable_styling(full_width=FALSE)
 ```
 
-This table inherits from `PERSON` and `SPECIMEN` currently, but this is changeable. I attempted to emulate the current OMOP model's verbage as well, so these terms are not official. The reasons for including this table are two fold: First, sequencing data is excedingly common in contemporary research, and is increasingly common in personalized medicine techniques, making integration of sequencing data into existing OMOP databases crucial. Second, to be truly useful "Sequencing" data should be able to incorporate the spectrum of products along the testing pipeline, from library preparation to sequencing to data analysis. This will allow for intermediate steps and files to be used (getting and using raw files rather than the gene counts, for example). But crucially, this will facilitate comparisons using data sets between different studies, which must account for differences in library preparation, quality control, alignment methods, reference data, etc.  Including this data should make this easier, but incorporating this variety of variables is not intuitive in the existing OMOP model.
+This table inherits from `PERSON` and `SPECIMEN` currently, but this is changeable. I attempted to emulate the current OMOP model's verbage as well, so these terms are not official. The reasons for including this table are two fold: First, sequencing data is excedingly common in contemporary research, and is increasingly common in personalized medicine techniques. Second, to be truly useful "Sequencing" data should be able to incorporate the spectrum of products along the testing pipeline, from library preparation to sequencing to data analysis. This will allow for intermediate steps and files to be used (getting and using raw files rather than the gene counts, for example). But crucially, this will facilitate comparisons using data sets between different studies, which must account for differences in library preparation, quality control, alignment methods, reference data, etc.  Including this data should make this easier, but incorporating this variety of variables is not intuitive in the existing OMOP model.
 
 #Step 3: Administrators design masks for data input.
 ```{r loadMasks,echo=TRUE}
-msks  <- loadModelMasks(mask_file_directory = dirs$masks)
+msks  <- loadModelMasks(mask_file_directory = file.path(dirs$base,"masks"))
 ```
 
 "Masks" are designed to streamline the addition of existing data sets to OMOP format, or at least to how the *admin* thinks these data sets should be incorporated. The mask file provides `table`, `alias`, and `field` columns, which describe each term's OMOP table, its name within the user's input file, and its name within the standard OMOP field, respectively. For instance, `patient_name` in the user's database will likely map to `person_source_value` in current OMOP parlance. Using multiple masks should streamline the use of multiple analysis types as well: the database administrators can develop and implement masks and users won't need to know that `patient_name` and `cell_line_name` are both synonymous with `person_source_value` in the OMOP framework, for instance. Thus "Sequencing" data can be added using the `sequencing` mask, while "HLA"" data can be incorporated using an `hla` mask. Here's an example of a `Sequencing` mask, provided to the `loadModelMasks()` function as a CSV:
@@ -116,3 +121,9 @@ In this example using this mask, the OMOP tables included are `r paste(names(omo
 ```{r buildDatabase,echo=TRUE}
 omop_db     <- buildSQLDBR(omop_tabs,sql_db_file = file.path(dirs$database,"sqlDB.sqlite"))
 ```
+
+```{r showDatabase,echo=TRUE}
+dbListTables(omop_db)
+dbListFields(omop_db,"PERSON")
+```
+

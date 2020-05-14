@@ -9,6 +9,8 @@
 #' @param sql_db_file Filename under which to store the SQLite database file.
 #'
 #' @import tidyverse
+#' @import DBI
+#' @import RSQLite
 #'
 #' buildSQLDBR()
 #'
@@ -18,7 +20,11 @@ buildSQLDBR     <- function(omop_tables,sql_db_file = file.path(dirs$data,"OMOP_
   #Accepts a list of named CSV tables and returns a dabase with each incorporated.
   #BUT: slow if database CSVs get large, so maybe use csv-to-sqlite after all.
   #https://datacarpentry.org/R-ecology-lesson/05-r-and-databases.html#creating_a_new_sqlite_database
-  db            <- src_sqlite(sql_db_file,create=TRUE)
-  lapply(names(omop_tables),function(x) copy_to(db,omop_tables[[x]],name=x,overwrite = TRUE))
+  #Start the DB connection.
+  db        <- DBI::dbConnect(RSQLite::SQLite(),sql_db_file)
+  #Add all tables to the connection.
+  lapply(names(omop_tables),function(x) copy_to(db,omop_tables[[x]],name=x,overwrite = TRUE,temporary = FALSE))
+  #Return the connection.
   return(db)
 }
+

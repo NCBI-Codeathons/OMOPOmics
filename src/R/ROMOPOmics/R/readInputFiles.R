@@ -24,11 +24,11 @@ readInputFiles    <- function(input_file = seq_input_files[1],
   fl_nm   <- str_match(basename(input_file),"(.+)\\.tsv$")[,2]
   #Merge input file into the full data model.
   in_tab  <- fread(input_file,sep = "\t",header = FALSE,stringsAsFactors = FALSE) %>%
-    rename(alias=1) %>%
-    merge(.,select(mask_table,table,alias,field),all.x = TRUE, all.y=TRUE) %>%
-    as_tibble() %>%
-    rename_at(vars(starts_with("V")), function(x) gsub("V",fl_nm,x)) %>%
-    select(table,field,everything(),-alias)
+              rename(alias=1) %>%
+              merge(.,select(mask_table,table,alias,field),all.x = TRUE, all.y=TRUE) %>%
+              as_tibble() %>%
+              rename_at(vars(starts_with("V")), function(x) gsub("V",fl_nm,x)) %>%
+              select(table,field,everything(),-alias)
 
   #The "standard table" now is the entire data model with mapped inputs, all
   # unspecified values as NA. Each individual entry is stored in unique column.
@@ -36,5 +36,6 @@ readInputFiles    <- function(input_file = seq_input_files[1],
     mutate(table=toupper(table)) %>%
     merge(in_tab,all=TRUE) %>%
     as_tibble() %>%
+    mutate_all(function(x) ifelse(x=="",NA,x)) %>%
     return()
 }

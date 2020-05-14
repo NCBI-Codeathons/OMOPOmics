@@ -1,0 +1,32 @@
+patient_name	Bill Smith	Bill Smith	Bill Smith	Bill Smith
+sex	Male	Male	Male	Male
+collection_datetime	6/17/2018	6/19/2018	6/19/2018	6/19/2018
+sample_anatomy	appendix	appendix	appendix	appendix
+disease_status	appendicitis	appendicitis	appendicitis	appendicitis
+data_source	Glens Falls hospital	Glens Falls hospital	Glens Falls hospital	Glens Falls hospital
+sequencing_library_type	small RNA	small RNA	small RNA	small RNA
+sequencing_library_kit	Qiagen smRNA	Qiagen smRNA	Qiagen smRNA	Qiagen smRNA
+paired_end	0	0	0	0
+sequencing_cycles	50	50	50	50
+sequencing_platform	Illumina NextSeq	Illumina NextSeq	Illumina NextSeq	Illumina NextSeq
+reference_genome	hg38	hg38	hg38	hg38
+sequencing_metric	smRNA transcripts	smRNA transcripts	smRNA transcripts	smRNA transcripts
+sequencing_pct_alignment	98	99		
+sequencing_min_quality	20	20		
+sequencing_quality_metric	Phred	Phred		
+sequencing_file_type	Alignment	Alignment	Counts	Differential expression
+sequencing_file_description	Raw reads	Raw reads	Transcripts matched to miRBase2.1 miRNA using Rsubread.	"Differential expression of Ctrl vs. Hydroxycut using DESeq2, 0.05 padj. cutoff, 2 log2FC cutoff."
+sequencing_file_location	/sample/file/alg/ctrl1.bam	/sample/file/alg/treat1.bam	/sample/file/cnts.tsv	/sample/file/de.tsv
+sequencing_repository	GlensFalls Hospital Datastore	GlensFalls Hospital Datastore	GlensFalls Hospital Datastore	GlensFalls Hospital Datastore
+sequencing_repo_id	999996	999997	999998	999999
+sequencing_URL	ftp://gfh.med/9992914/smithbill	ftp://gfh.med/9992914/smithbill	ftp://gfh.med/9992914/smithbill	ftp://gfh.med/9992914/smithbill
+sample_condition	Control	Treament		
+cohort_name	Hydroxycut_advil_appendicitis_study	Hydroxycut_advil_appendicitis_study	Hydroxycut_advil_appendicitis_study	Hydroxycut_advil_appendicitis_study
+cohort_description	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.
+cohort_definition_date	6/19/2018	6/19/2018	6/19/2018	6/19/2018
+treatment_start_datetime	6/16/2018 5:00am	6/17/2018 5:00am		
+treatment_end_datetime	6/17/2018 5:00am	6/18/2018 5:00am		
+drug_treatment	Saline	Hydroxycut		
+drug_treatment_method	IV drip	IV drip		
+drug_dose	0	100		
+drug_dose_unit	mg/kg	mg/kg		
