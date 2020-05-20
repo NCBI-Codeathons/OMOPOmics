@@ -18,8 +18,8 @@ dirs      <- list()
 dirs$base <- ifelse(interactive(),
                     file.path(here(),"src/R/ROMOPOmics/demo"),
                     file.path(here(),"demo"))
-dirs$data <- file.path(dirs$base,"data")
-dirs$masks<- file.path(dirs$base,"masks")
+dirs$data     <- file.path(dirs$base,"data")
+dirs$masks    <- file.path(dirs$base,"masks")
 dirs$seq_data <- file.path(dirs$base,"sequencing")
 dirs$hla_data <- file.path(dirs$base,"hla")
 dirs$database <- file.path(dirs$base,"database")

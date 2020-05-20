@@ -17,9 +17,9 @@
 #'
 #' @export
 
-readInputFiles    <- function(input_file = seq_input_files[1],
+readInputFiles    <- function(input_file = input_files[[2]],
                               data_model = dm,
-                              mask_table = msks$sequencing_mask){
+                              mask_table = msks$patient_sequencing){
   #Get file names to append to each column.
   fl_nm   <- str_match(basename(input_file),"(.+)\\.tsv$")[,2]
   #Merge input file into the full data model.
@@ -33,6 +33,7 @@ readInputFiles    <- function(input_file = seq_input_files[1],
   #The "standard table" now is the entire data model with mapped inputs, all
   # unspecified values as NA. Each individual entry is stored in unique column.
   data_model %>%
+    select(field,table,required,type,description,table_index) %>% #Only keep standard cols.
     mutate(table=toupper(table)) %>%
     merge(in_tab,all=TRUE) %>%
     as_tibble() %>%

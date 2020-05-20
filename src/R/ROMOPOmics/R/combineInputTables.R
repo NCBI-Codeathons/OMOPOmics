@@ -64,15 +64,16 @@ combineInputTables  <- function(input_table_list=lapply(seq_input_files,readInpu
   names(tbl_lst) <- tbl_names
   for(tb_name in rev(tbl_names)){
     cd        <- filter(col_data,table==tb_name) %>%
-      arrange(!table_index)
+                  arrange(!table_index)
     all_cols  <- filter(cd,!table_index) %>% select(table_field) %>% unlist(use.names=FALSE)
     idx_cols  <- cd %>% filter(table_index) %>% select(field) %>% unlist(use.names=FALSE)
     col_types <- interpret_class(cd$type)
     names(col_types)  <- cd$table_field
     tb_out    <- select(tb,ends_with(idx_cols),all_cols)
-
+x <- list()
     for(i in all_cols){
-      class(tb_out[[i]])<- interpret_class(filter(cd,table_field==i) %>% select(type) %>% unlist())
+      #class(tb_out[[i]])<- interpret_class(filter(cd,table_field==i) %>% select(type) %>% unlist())
+      x <-  c(x,interpret_class(filter(cd,table_field==i) %>% select(type) %>% unlist()))
     }
     tbl_lst[[tb_name]]  <- rename_all(tb_out,function(x) str_extract(x,"[^\\|]+$")) %>%
                             distinct()

@@ -5,9 +5,9 @@
 \title{readInputFiles}
 \usage{
 readInputFiles(
-  input_file = seq_input_files[1],
+  input_file = input_files[[2]],
   data_model = dm,
-  mask_table = msks$sequencing_mask
+  mask_table = msks$patient_sequencing
 )
 }
 \arguments{

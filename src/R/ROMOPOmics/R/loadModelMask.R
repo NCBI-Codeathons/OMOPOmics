@@ -18,8 +18,8 @@ loadModelMasks  <- function(mask_file_directory,data_model=loadDataModel(),as_bl
     mask_file_directory <- system.file("extdata","masks",package = "ROMOPOmics",mustWork = TRUE)
   }
   mask_files    <- Sys.glob(file.path(mask_file_directory,"*.tsv"))
-  masks         <- lapply(mask_files,function(x) as_tibble(fread(x)))
-  names(masks)  <- gsub(".tsv","",basename(mask_files))
+  masks         <- lapply(mask_files,function(x) as_tibble(fread(x,sep = "\t",header = TRUE)))
+  names(masks)  <- gsub("_mask.tsv","",basename(mask_files))
 
   #Check for duplicated aliases.
   for(x in names(masks)){
