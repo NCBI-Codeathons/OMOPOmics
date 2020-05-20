@@ -1,0 +1,32 @@
+patient_name	Crystal Murphy	Crystal Murphy	Crystal Murphy	Crystal Murphy
+sex	Female	Female	Female	Female
+collection_datetime	6/12/2018	6/13/2018	6/14/2018	6/15/2018
+sample_anatomy	appendix	appendix	appendix	appendix
+disease_status	appendicitis	appendicitis	appendicitis	appendicitis
+data_source	Saratoga Hospital	Saratoga Hospital	Saratoga Hospital	Saratoga Hospital
+sequencing_library_type	small RNA	small RNA	small RNA	small RNA
+sequencing_library_kit	Qiagen smRNA	Qiagen smRNA	Qiagen smRNA	Qiagen smRNA
+paired_end	0	0	0	0
+sequencing_cycles	50	50	50	50
+sequencing_platform	Illumina MiSeq 2.1	Illumina MiSeq 2.1	Illumina MiSeq 2.1	Illumina MiSeq 2.1
+reference_genome	hg19	hg19	hg19	hg19
+sequencing_metric	smRNA transcripts	smRNA transcripts	smRNA transcripts	smRNA transcripts
+sequencing_pct_alignment	77	82		
+sequencing_min_quality	30	30		
+sequencing_quality_metric	Phred	Phred		
+sequencing_file_type	Alignment	Alignment	Counts	Differential expression
+sequencing_file_description	Raw reads	Raw reads	Transcripts matched to miRBase2.1 miRNA using Rsubread.	"Differential expression of Ctrl vs. Advil using DESeq2, 0.05 padj. cutoff, 2 log2FC cutoff."
+sequencing_file_location	/sample/file/alg/ctrl1.bam	/sample/file/alg/treat1.bam	/sample/file/cnts.tsv	/sample/file/de.tsv
+sequencing_repository	Saratoga Hospital DataRUs	Saratoga Hospital DataRUs	Saratoga Hospital DataRUs	Saratoga Hospital DataRUs
+sequencing_repo_id	999996	999997	999998	999999
+sequencing_URL	ftp://shd.med/9992914/smithbill	ftp://shd.med/9992914/smithbill	ftp://shd.med/9992914/smithbill	ftp://shd.med/9992914/smithbill
+sample_condition	Control	Treatment		
+cohort_name	Hydroxycut_advil_appendicitis_study	Hydroxycut_advil_appendicitis_study	Hydroxycut_advil_appendicitis_study	Hydroxycut_advil_appendicitis_study
+cohort_description	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.	Appendicitis smRNA expression before and after Hydroxycut or advil treatment.
+cohort_definition_date	6/19/2018	6/19/2018	6/19/2018	6/19/2018
+treatment_start_datetime	6/10/2018 5:00am	6/12/2018 5:00am		
+treatment_end_datetime	6/12/2018 5:00am	6/14/2018 5:00am		
+drug_treatment	Sugar	Advil		
+drug_treatment_method	Tablet	Tablet		
+drug_dose	300	100		
+drug_dose_unit	mg	mg		
