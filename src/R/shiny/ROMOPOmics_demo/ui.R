@@ -5,20 +5,24 @@ shinyUI(fluidPage(
       sidebarLayout(
         sidebarPanel(
           verbatimTextOutput("db_blurb"),
-          selectInput(inputId="db_mask",label = "Apply mask",multiple = FALSE,
-                      choices = opt_db_mask_select,selected = opt_db_mask_select_def),
-          selectInput(inputId="db_field_select",label = "Include columns",multiple = TRUE,
-                      choices = opt_db_field_select,selected = opt_db_field_select_def),
-          selectInput(inputId="db_filt_select",label = "Filter columns:",multiple = TRUE,
-                      choices = opt_db_filt_select, selected = opt_db_filt_select_def),
-          h2("Filter values"),
-          div(id="nextFilterUI"),
+          #selectInput(inputId="db_mask",label = "Apply mask",multiple = FALSE,
+          #            choices = opt_db_mask_select,selected = opt_db_mask_select_def),
+          #selectInput(inputId="db_field_select",label = "Include columns",multiple = TRUE,
+          #            choices = opt_db_field_select,selected = opt_db_field_select_def),
+          #selectInput(inputId="db_filt_select",label = "Filter columns:",multiple = TRUE,
+          #            choices = opt_db_filt_select, selected = opt_db_filt_select_def),
+          #h2("Filter values"),
+          #div(id="nextFilterUI"),
           #addFilterUI("flt.character.hla_values"),
           #addFilterUI("flt.integer.specimen_id")
+          h2("Query"),
+          textAreaInput(inputId="db_manual_query",label="",resize = "vertical",value = opt_db_manual_def)
+          #actionButton(inputId="db_submit_manual_query",label="Submit")
         ),
         mainPanel(
           dataTableOutput("db_preview"),
-          dataTableOutput("flt_tbl")
+          #br(),
+          #dataTableOutput("flt_tbl")
         )
       )
     ),
@@ -29,7 +33,8 @@ shinyUI(fluidPage(
                       choices = opt_mask_select,selected = opt_mask_select_def,multiple = FALSE),
           verbatimTextOutput("mask_blurb"),
           plotOutput("mask_network"),
-          selectInput(inputId="mask_layout",label = "Layout",choices = opt_msk_layout,selected = opt_msk_layout_def,multiple = FALSE)
+          selectInput(inputId="mask_layout",label = "Layout",multiple = FALSE,
+                      choices = opt_msk_layout,selected = opt_msk_layout_def)
         ),
         mainPanel(
           dataTableOutput("mask_table")

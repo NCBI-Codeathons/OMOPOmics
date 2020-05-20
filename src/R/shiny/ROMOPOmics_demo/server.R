@@ -2,15 +2,17 @@ shinyServer(function(input, output, session=session) {
   #####################
   #     Reactives     #
   #####################
+  #query_table   <- reactive({
+  #  show_cols <- c(input$db_field_select,input$db_filt_select) %>%
+  #                str_extract("[^\\|]+$")
+  #  queryTable(include_cols=input$db_field_select,
+  #             filter_cols=input$db_filt_select,
+  #             key_tabs=db_key_tabs,
+  #             table_list=db_tabs) %>%
+  #    select(show_cols)
+  #})
   query_table   <- reactive({
-    show_cols <- c(input$db_field_select,input$db_filt_select) %>%
-                  str_extract("[^\\|]+$")
-    queryTable(include_cols=input$db_field_select,
-               filter_cols=input$db_filt_select,
-               key_tabs=db_key_tabs,
-               table_list=db_tabs) %>%
-      select(show_cols)
-    
+    dbGetQuery(conn = db,statement = input$db_manual_query)
   })
   filter_table  <- reactive({
     filterTable(filter_cols=input$db_filt_select,

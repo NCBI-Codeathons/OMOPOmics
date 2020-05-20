@@ -127,5 +127,8 @@ omop_db     <- buildSQLDBR(omop_tabs,sql_db_file = file.path(dirs$database,"sqlD
 ```{r showDatabase,echo=TRUE}
 dbListTables(omop_db)
 dbListFields(omop_db,"PERSON")
+dbGetQuery(omop_db,'SELECT person_source_value, person.person_id, file_local_source,file_type_source_value,file_remote_source_url
+FROM person INNER JOIN sequencing
+WHERE file_type_source_value = "Counts"')
 ```
 

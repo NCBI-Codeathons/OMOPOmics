@@ -1362,6 +1362,19 @@ omop_tabs       &lt;- lapply(seq_input_files,readInputFiles,data_model = dm,mask
 ## [13] &quot;person_source_value&quot;         &quot;race_concept_id&quot;            
 ## [15] &quot;race_source_concept_id&quot;      &quot;race_source_value&quot;          
 ## [17] &quot;year_of_birth&quot;</code></pre>
+<pre class="r"><code>dbGetQuery(omop_db,'SELECT person_source_value, person.person_id, file_local_source,file_type_source_value,file_remote_source_url
+FROM person INNER JOIN sequencing
+WHERE file_type_source_value = &quot;Counts&quot;')</code></pre>
+<pre><code>##   person_source_value person_id     file_local_source file_type_source_value
+## 1      Crystal Murphy         1 /sample/file/cnts.tsv                 Counts
+## 2          Bill Smith         2 /sample/file/cnts.tsv                 Counts
+## 3      Crystal Murphy         1 /sample/file/cnts.tsv                 Counts
+## 4          Bill Smith         2 /sample/file/cnts.tsv                 Counts
+##            file_remote_source_url
+## 1 ftp://shd.med/9992914/smithbill
+## 2 ftp://shd.med/9992914/smithbill
+## 3 ftp://gfh.med/9992914/smithbill
+## 4 ftp://gfh.med/9992914/smithbill</code></pre>
 </div>
 
 

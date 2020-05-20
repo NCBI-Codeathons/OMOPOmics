@@ -8,8 +8,7 @@ library(shiny)
 library(DBI)
 
 dirs          <- list()
-#dirs$base     <- file.path("/projects/andrew/ROMOPOmics_imp/ROMOPOmics_imp")
-dirs$base     <- file.path(here(),"src","R","shiny","ROMOPOmics_demo")
+dirs$base     <- file.path("/projects/andrew/ROMOPOmics_imp/ROMOPOmics_imp")
 dirs$src      <- file.path(dirs$base,"src")
 dirs$data     <- file.path(dirs$base,"data")
 dirs$masks    <- file.path(dirs$base,"masks")
@@ -82,5 +81,8 @@ opt_db_field_select     <- getFields(db_tabs,mask = "none")
 opt_db_field_select_def <- c("person|person_id","person|gender_source_value","person|hla_source_value","sequencing|file_local_source","sequencing|file_remote_source_url")
 opt_db_filt_select      <- opt_db_field_select
 opt_db_filt_select_def  <- "person|hla_source_value"
+opt_db_manual_def       <- 'SELECT person_source_value, person.person_id, file_local_source,file_type_source_value,file_remote_source_url
+FROM person INNER JOIN sequencing
+WHERE file_type_source_value = "Counts"'
 
 # source(file.path(dirs$base,"scrap.R"))
