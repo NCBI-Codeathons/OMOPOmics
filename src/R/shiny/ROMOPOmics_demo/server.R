@@ -60,6 +60,9 @@ shinyServer(function(input, output, session=session) {
   #####################
   #     Outputs       #
   #####################
+  output$db_preview   <- renderDataTable({
+    as_tibble(query_table())
+  })
   output$flt_tbl      <- renderDataTable({
     filter_table()
   })

@@ -1375,6 +1375,28 @@ WHERE file_type_source_value = &quot;Counts&quot;')</code></pre>
 ## 2 ftp://shd.med/9992914/smithbill
 ## 3 ftp://gfh.med/9992914/smithbill
 ## 4 ftp://gfh.med/9992914/smithbill</code></pre>
+<div id="tldr-script" class="section level2">
+<h2>Tl;DR script:</h2>
+<pre><code>library(ROMOPOmics)
+
+# Load data model.
+dm_file         &lt;- file.path(dirs$base,&quot;OMOP_CDM_v6_0_custom.csv&quot;)
+dm              &lt;- loadDataModel(master_table_file = new_dm_file)
+
+# Load masks.
+mask_file_dir   &lt;- file.path(dirs$base,&quot;masks&quot;)
+msk             &lt;- loadModelMasks(mask_file_directory = file.path(dirs$base,&quot;masks&quot;))
+
+# Load input files into model table format.
+input_files     &lt;- Sys.glob(file.path(dirs$seq_data,&quot;*.tsv&quot;))
+omop_tabs       &lt;- readInputFiles(input_files=input_files,data_model = dm,mask_table=msk)
+
+# Combine all model format tables into one data table.
+db_tab          &lt;- combineInputTables(omop_tabs)
+
+# Build SQLite database.
+db              &lt;- buildSQLDBR(db_tab,sql_db_file = file.path(dirs$database,&quot;sqlDB.sqlite&quot;))</code></pre>
+</div>
 </div>
 
 

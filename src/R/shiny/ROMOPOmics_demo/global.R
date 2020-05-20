@@ -1,14 +1,20 @@
 library(tidyverse)
+library(ROMOPOmics)
 library(data.table)
-#library(knitr)
-#library(kableExtra)
-#library(here)
+library(DT)
+library(knitr)
+library(kableExtra)
+library(here)
 library(RSQLite)
 library(shiny)
 library(DBI)
+library(GGally) #https://briatte.github.io/ggnet/
+library(network)
+library(sna)
+
 
 dirs          <- list()
-#dirs$base     <- file.path("/projects/andrew/ROMOPOmics_imp/ROMOPOmics_imp")
+#dirs$base     <- file.path("/projects/andrew/OMOPOmics/src/R/shiny/ROMOPOmics_demo/")
 dirs$base     <- file.path(".")
 dirs$src      <- file.path(dirs$base,"src")
 dirs$data     <- file.path(dirs$base,"data")
@@ -88,3 +94,4 @@ WHERE file_type_source_value = "Counts"
 ORDER BY person_source_value'
 
 # source(file.path(dirs$base,"scrap.R"))
+

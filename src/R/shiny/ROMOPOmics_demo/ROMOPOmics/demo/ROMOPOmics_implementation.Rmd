@@ -132,3 +132,25 @@ FROM person INNER JOIN sequencing
 WHERE file_type_source_value = "Counts"')
 ```
 
+##Tl;DR script:
+```
+library(ROMOPOmics)
+
+# Load data model.
+dm_file         <- file.path(dirs$base,"OMOP_CDM_v6_0_custom.csv")
+dm              <- loadDataModel(master_table_file = new_dm_file)
+
+# Load masks.
+mask_file_dir   <- file.path(dirs$base,"masks")
+msk             <- loadModelMasks(mask_file_directory = file.path(dirs$base,"masks"))
+
+# Load input files into model table format.
+input_files     <- Sys.glob(file.path(dirs$seq_data,"*.tsv"))
+omop_tabs       <- readInputFiles(input_files=input_files,data_model = dm,mask_table=msk)
+
+# Combine all model format tables into one data table.
+db_tab          <- combineInputTables(omop_tabs)
+
+# Build SQLite database.
+db              <- buildSQLDBR(db_tab,sql_db_file = file.path(dirs$database,"sqlDB.sqlite"))
+```

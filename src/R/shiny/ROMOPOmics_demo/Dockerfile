@@ -5,6 +5,19 @@
 # get latest version of rocker/shiny
 FROM rocker/shiny:latest
 
+# system libraries of general use
+## install debian packages
+RUN apt-get update -qq && apt-get -y --no-install-recommends install \
+    libxml2-dev \
+    libcairo2-dev \
+    libsqlite3-dev \
+    libmariadbd-dev \
+    libpq-dev \
+    libssh2-1-dev \
+    unixodbc-dev \
+    libcurl4-openssl-dev \
+    libssl-dev
+
 # Establish working directory.
 WORKDIR ./
 
@@ -14,6 +27,7 @@ COPY . .
 # install R-packages.
 RUN Rscript -e 'install.packages("renv")'
 RUN Rscript -e 'renv::restore()'
+RUN Rscript -e 'devtools::install("./ROMOPOmics")'
 
 # expose port.
 EXPOSE 3838
