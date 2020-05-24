@@ -1,16 +1,4 @@
-person_id,condition_occurrence_id,condition_type_value
-100001,CO1,healthy
-100002,CO2,healthy
-100003,CO3,healthy
-100004,CO4,healthy
-100005,CO5,cutaneous T cell leukemia (CTCL)
-100006,CO6,healthy
-100007,CO7,healthy
-100008,CO8,healthy
-100009,CO9,healthy
-100010,CO10,healthy
-100011,CO11,cutaneous T cell leukemia (CTCL)
-100012,CO12,cutaneous T cell leukemia (CTCL)
-100013,CO13,healthy
-100014,CO14,healthy
-100015,CO15,healthy
+person_id,condition_occurence_id,condition_type_value
+100011,C100011,cutaneous T cell leukemia (CTCL)
+100012,C100012,cutaneous T cell leukemia (CTCL)
+100005,C100005,cutaneous T cell leukemia (CTCL)
