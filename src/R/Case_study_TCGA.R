@@ -62,6 +62,13 @@ brca_clinical_dt_long_snack_case_wide_transpose_reorder[1:50,1:5]
 brca_clinical_dt_long_snack_case_wide_transpose_reorder %>% 
   fwrite("RTCGA_data/brca_clinical.csv")
 
+barcodes <- 
+  brca_clinical_dt_long_snack_case_wide_transpose_reorder[
+    column_name=="patient.bcr_patient_barcode"
+    ] %>% 
+  unlist %>% 
+  unname
+
 # cleaning and reformatting BRCA mutation data --------------------------------------------------------------
 
 brca_mutation_dt_wide <- 
@@ -73,18 +80,43 @@ brca_mutation_dt_long <-
   melt(id.vars=c("bcr_patient_barcode")) %>% 
   na.omit()
 
+bcr_map <- 
+  unique(brca_mutation_dt_long[,
+                             .(bcr_patient_barcode)
+                             ]
+       )[,
+         .(bcr_patient_barcode,split = str_split(bcr_patient_barcode,"-")
+           )
+         ]
+
+bcr_map$split_join <- sapply(bcr_map$split,function(x){paste0(str_to_lower(x[1:3]),collapse="-")})
+
+tmp <- merge( 
+  bcr_map[,
+          .(bcr_patient_barcode,split_join)
+          ],
+  brca_mutation_dt_long,
+  by="bcr_patient_barcode"
+  )[
+    ,c("bcr_patient_barcode") := list(NULL)
+  ]
+
+setnames(tmp,c("split_join"),c("bcr_patient_barcode"))
+
 brca_mutation_dt_long_snake_case <- 
-  brca_mutation_dt_long[,
-                        .(snake_case_variable = str_to_lower(variable)),
-                        .(bcr_patient_barcode,value)
-                        ]
+  tmp[,
+      .(snake_case_variable = str_to_lower(variable)),
+      .(bcr_patient_barcode,value)
+      ]
 
 brca_mutation_dt_long_snake_case$snake_case_variable %>% unique()
 
 brca_mutation_dt_long_snack_case_wide <- 
   brca_mutation_dt_long_snake_case[
     snake_case_variable %in%
-      c("tumor_sample_uuid")
+      c("tumor_sample_uuid","ncbi_build","sequencer",
+        "bam_file","matched_norm_sample_barcode","tumor_sample_barcode",
+        "validation_method","sequence_source")
   ] %>% 
   dcast(bcr_patient_barcode ~ snake_case_variable,value.var="value",fun.aggregate=function(x){x[1]})
 
@@ -105,7 +137,7 @@ brca_mutation_dt_long_snack_case_wide_transpose_reorder <-
                                                 with=F] 
 
 dim(brca_mutation_dt_long_snack_case_wide_transpose_reorder)
-brca_mutation_dt_long_snack_case_wide_transpose_reorder[1:2,1:5]
+brca_mutation_dt_long_snack_case_wide_transpose_reorder[1:10,1:5]
 
 brca_mutation_dt_long_snack_case_wide_transpose_reorder %>% 
   fwrite("RTCGA_data/brca_mutation.csv")
