@@ -1,6 +1,0 @@
-external.libraries:
-ignored.packages: ROMOPOmics
-package.dependency.fields: Imports, Depends, LinkingTo
-snapshot.type: implicit
-use.cache: TRUE
-vcs.ignore.library: TRUE
