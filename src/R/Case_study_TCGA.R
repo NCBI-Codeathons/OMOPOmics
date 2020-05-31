@@ -21,6 +21,10 @@ brca_clinical_dt_wide <-
 # the above is in wide format and I'd like to make it long 
 # so we can revise the column names to remove the periods
 
+brca_clinical_dt_wide[,.(admin.file_uuid,
+                         patient.biospecimen.cqcf.normal.controls.normal.control.bcr_sample_uuid,
+                         patient.bcr_patient_barcode,
+                         patient.bcr_patient_uuid)]
 
 brca_clinical_dt_long <- 
   brca_clinical_dt_wide %>% 
@@ -36,8 +40,28 @@ brca_clinical_dt_long_snake_case <-
 
 # Now I'm going to make this wide again but now the column names are much nicer
 
+brca_clinical_dt_long_snake_case[order(snake_case_variable)]$snake_case_variable %>% unique() %>% head(100)
+
+brca_clinical_dt_long_snake_case[grepl("patient_anatomic_neoplasm_subdivisions_anatomic_neoplasm_subdivision",
+                                       snake_case_variable)
+                                 ] %>% dcast(patient.bcr_patient_barcode ~ snake_case_variable)
+  
 brca_clinical_dt_long_snack_case_wide <- 
-  brca_clinical_dt_long_snake_case %>% 
+  brca_clinical_dt_long_snake_case[
+    snake_case_variable %in% c("admin_bcr",
+                               "admin_file_uuid",
+                               "patient_bcr_patient_uuid",
+                               "patient_days_to_birth",
+                               "patient_days_to_death",
+                               "patient_age_at_initial_pathologic_diagnosis","admin_project_code",
+                               "patient_ethnicity",
+                               "patient_biospecimen_cqcf_tumor_samples_tumor_sample_tumor_necrosis_percent",
+                               "patient_number_of_lymphnodes_positive_by_he",
+                               "patient_number_of_lymphnodes_positive_by_ihc",
+                               "patient_lymph_node_examined_count",
+                               "patient_anatomic_neoplasm_subdivisions_anatomic_neoplasm_subdivision"
+                               )
+  ] %>% 
   dcast(patient.bcr_patient_barcode ~ snake_case_variable,value.var="value")
 
 brca_clinical_dt_long_snack_case_wide_transpose <- 
@@ -58,6 +82,13 @@ brca_clinical_dt_long_snack_case_wide_transpose_reorder <-
 
 dim(brca_clinical_dt_long_snack_case_wide_transpose_reorder)
 brca_clinical_dt_long_snack_case_wide_transpose_reorder[1:50,1:5]
+
+brca_clinical_dt_long_snack_case_wide_transpose_reorder$column_name <- 
+  lapply(brca_clinical_dt_long_snack_case_wide_transpose_reorder[,column_name],
+       function(x){splt <- str_split(x,"_"); paste0(splt[[1]][2:length(splt[[1]])],collapse="_")})
+
+brca_clinical_dt_long_snack_case_wide_transpose_reorder$column_name[[1]] <- 
+  paste0("bcr_",brca_clinical_dt_long_snack_case_wide_transpose_reorder$column_name[[1]])
 
 brca_clinical_dt_long_snack_case_wide_transpose_reorder %>% 
   fwrite("RTCGA_data/brca_clinical.csv")
