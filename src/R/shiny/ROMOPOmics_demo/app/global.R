@@ -13,8 +13,8 @@ library(network)
 library(sna)
 
 dirs          <- list()
-#dirs$base     <- file.path("/projects/andrew/OMOPOmics/src/R/shiny/ROMOPOmics_demo")
-dirs$base     <- file.path("..")
+dirs$base     <- file.path("/projects/andrew/OMOPOmics/src/R/shiny/ROMOPOmics_demo")
+#dirs$base     <- file.path("..")
 dirs$app      <- file.path(dirs$base,"app")
 dirs$src      <- file.path(dirs$base,"src")
 dirs$data     <- file.path(dirs$base,"data")
@@ -49,7 +49,7 @@ for(i in 1:length(msks)){
 }
 
 #Read existing data files into comprehensive input tables.
-input_files       <- lapply(names(msks), function(x) Sys.glob(paste0(dirs$inputs[[x]],"/*.tsv")))
+input_files       <- lapply(names(msks), function(x) Sys.glob(paste0(dirs$inputs[[x]],"/*\\.*sv")))
 names(input_files)<- names(msks)
 input_tables      <- list()
 for(mask in names(msks)){
@@ -59,6 +59,7 @@ for(mask in names(msks)){
 }
 
 #Build DB and SQLite connection. For now these don't change after runtime.
+#input_table_list = input_table_list = input_tables
 db            <- combineInputTables(input_tables) %>%
                   buildSQLDBR(sql_db_file = dirs$db_file)
 db_tabs       <- getDBTables(db,find_key = FALSE)

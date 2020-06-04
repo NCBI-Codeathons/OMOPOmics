@@ -21,12 +21,16 @@ loadModelMasks  <- function(mask_file_directory,data_model=loadDataModel(),as_bl
   masks         <- lapply(mask_files,function(x) as_tibble(fread(x,sep = "\t",header = TRUE)))
   names(masks)  <- gsub("_mask.tsv","",basename(mask_files))
 
-  #Check for duplicated aliases.
-  for(x in names(masks)){
-    if(nrow(masks[[x]]) > length(unique(masks[[x]]$alias))){
-      message("Duplicated aliases detected in mask table ",x,", these are not allowed.")
-    }
-  }
+  masks   <- lapply(masks, function(x)
+    x %>%
+      #Check that set_value and entry_index columns are present, if not add blanks.
+      mutate(set_value = if("set_value" %in% names(.)){set_value}else{NA},
+             field_idx = if("field_idx" %in% names(.)){field_idx}else{NA},
+             set_value = ifelse(set_value=="",NA,set_value),
+             field_idx = ifelse(field_idx=="",NA,field_idx)) %>%
+      select(table,alias,field,set_value,field_idx,everything())
+  )
+
   if(as_blank){
     return(lapply(masks,function(x) select(x,alias)))
   }else{

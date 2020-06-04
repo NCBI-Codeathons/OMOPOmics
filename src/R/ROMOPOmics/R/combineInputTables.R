@@ -24,8 +24,10 @@ combineInputTables  <- function(input_table_list=lapply(seq_input_files,readInpu
   # purposes.
 
   #Reference that includes ALL columns, including IDs and fields with identical names.
-  full_tb   <- as_tibble(do.call(merge,input_table_list)) %>%
-                mutate(table_field = paste(table,field,sep="|"))
+  #full_tb   <- as_tibble(do.call(merge,input_table_list)) %>%
+   #             mutate(table_field = paste(table,field,sep="|"))
+  full_tb   <- Reduce(merge,input_table_list) %>%
+                 mutate(table_field = paste(table,field,sep="|"))
   #Figure out used OMOP tables (those with any input fields).
   used_tbs  <- full_tb %>%
                 select(-field,-required,-type,-description,-table_index,-table_field) %>%

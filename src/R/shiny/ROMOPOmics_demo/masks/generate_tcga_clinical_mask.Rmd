@@ -1,0 +1,48 @@
+---
+title: "TCGA clinical mask"
+author: "Andrew"
+date: "5/30/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(magrittr)
+library(here)
+library(data.table)
+library(ROMOPOmics)
+library(knitr)
+library(scales)
+library(lubridate)
+knitr::opts_chunk$set(echo = FALSE)
+mask_dir  <- file.path(here(),"masks")
+data_file <- file.path(here(),"data/tcga/brca_clinical.csv")
+```
+
+#The Cancer Genome Atlas ([TCGA](https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga))
+##Clinical data mask.
+
+- Add gender value.
+
+- Convert age, death, and date of submission to birthday, death date, and date of submission in datetime format.
+
+- Add means of specifying multiple observations, treatments, etc. at run time. (input has multiple observation values, have ROMOPOmics add these to new columns)
+
+```{r loadDataTable}
+tib   <- fread(data_file,header = TRUE) %>%
+          as_tibble() %>%
+          mutate_all(function(x) ifelse(x=="",NA,x))
+```
+
+> File name: `r data_file`
+
+This data table includes **`r prettyNum(ncol(tib) - 1,big.mark=",")` samples** and **`r prettyNum(nrow(tib) - 1,big.mark=",")` metrics**. For the sake of this demo, we assume that the user only wants to use a subset of data included in the TCGA data set. For that reason, I opted to do the following:
+
+###1. Split up samples by number (start with "patient_samples_sample", followed by number OR nothing for 1) into multiple replicates.
+```{r parseTable}
+tib %>% 
+  mutate(field="",table="") %>%
+  rename(alias=column_name,example1=V1,example2=V2) %>%
+  select(-starts_with("V")) %>%
+  write.table(file = file.path(mask_dir,"brca_clinical_mask_blank.tsv"),sep = "\t",row.names = FALSE,col.names=TRUE,quote = FALSE)
+```

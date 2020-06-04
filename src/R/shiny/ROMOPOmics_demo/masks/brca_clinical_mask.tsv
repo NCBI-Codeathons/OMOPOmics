@@ -1,0 +1,24 @@
+alias	example1	field	table	field_idx	set_value
+bcr_patient_barcode	tcga-3c-aaau	person_source_value	PERSON	1	
+bcr	nationwide children's hospital	care_site_id	PROVIDER		
+file_uuid	31548443-603d-49d3-ab80-945e3867dd9f	file_remote_repo_id	PROVIDER		
+project_code	tcga	cohort_definition_id	COHORT		
+age_at_initial_pathologic_diagnosis	55	observation_source_value	OBSERVATION		
+age_at_initial_pathologic_diagnosis_unit	years	unit_source_value	OBSERVATION		years
+anatomic_neoplasm_subdivisions_anatomic_neoplasm_subdivision	left lower outer quadrant	anatomic_site_source_value	SPECIMEN		
+bcr_patient_uuid	6e7d5ec6-a469-467c-b748-237353c23416	person_source_value	PERSON	2	
+biospecimen_cqcf_tumor_samples_tumor_sample_tumor_necrosis_percent	1	measurement_source_value	MEASUREMENT	1	
+biospecimen_cqcf_tumor_samples_tumor_sample_tumor_necrosis_percent_unit	percent	unit_source_value	MEASUREMENT	1	percent
+date_of_birth	7/14/1959	birth_datetime	PERSON		
+date_of_death	NA	death_datetime	PERSON		
+date_of_treatment	11/13/2014	specimen_datetime	SPECIMEN		
+ethnicity	not hispanic or latino	ethnicity_source_concept_id	PERSON		
+gender	female	gender_source_value	PERSON		
+lymph_node_examined_count	13	measurement_source_value	MEASUREMENT	2	
+lymph_node_count_date	6/19/2004	measurement_datetime	MEASUREMENT	2	
+lymphnodes_he	lymph node he	measurement_source_value	MEASUREMENT	3	lymph node he
+number_of_lymphnodes_positive_by_he	4	value_as_number	MEASUREMENT	3	
+number_of_lymphnodes_positive_by_he_unit	nodes	unit_source_value	MEASUREMENT	3	nodes
+lymphnodes_ihc	lympth node ihc	measurement_source_value	MEASUREMENT	4	lymph node ihc
+number_of_lymphnodes_positive_by_ihc	NA	value_as_number	MEASUREMENT	4	
+number_of_lymphnodes_positive_by_ihc_unit	nodes	unit_source_value	MEASUREMENT	4	nodes
